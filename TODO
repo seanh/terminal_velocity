@@ -1,0 +1,37 @@
+Copy over command-line options and other niceties and details from `note`.
+
+Sort notes most recently modified at top
+
+Choose a better palette and other basic appearance improvements
+
+Smarter search box:
+Auto-complete a note's title and select it if it starts with search terms
+Selecting a note should place its title in the search box
+Use the search box contents to decide what to open on <Enter>, if a note
+is autocompleted open it if not open a new note
+ctrl-d deselects a selected note
+Tab consumes the autocomplete ghost text
+
+'You have no notes yet' or 'Enter to create new note' in empty list
+
+More efficient search algorithm.
+
+ctrl-r to rename notes in list
+
+ctrl-j, ctrl-k to move up and down in list
+Something seems to be interfering here.
+
+shift-ctrl-v (or something else) to paste clipboard as new note.
+But how do you choose the note title and body?
+
+ctrl-del to delete note
+
+Note body previews
+
+If no note is selected and the user hits down, first note should be
+selected (not second)
+
+Add an informative footer. My idea is to have it say what version of Terminal
+Velocity you're running, where your notes dir is, and how many notes you have,
+but also to use it to show warnings and error messages (or debug messages in
+debug mode), messages about git integration, etc.
