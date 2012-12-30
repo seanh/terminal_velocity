@@ -5,7 +5,7 @@ Sort notes most recently modified at top
 Choose a better palette and other basic appearance improvements
 
 Autocomplete:
-- Esc or ctrl-d should clear selected note and autocomplete text
+x Esc or ctrl-d should clear selected note and autocomplete text
 - left and right arrows, backspace, etc. should accept autocomplete text
 - Tab to move from one matching note to the next
 - Handle up and down arrows and pgup and pgdn, manually selecting a note in

@@ -122,6 +122,9 @@ class MainFrame(urwid.Frame):
         self.notebook = notebook.PlainTextNoteBook(
                 "/home/seanh/Dropbox/Notes", "txt")
 
+        self.suppress_filter = False
+        self._selected_note = None
+
         self.search_box = AutocompleteWidget(wrap="clip")
         self.list_box = NoteFilterListBox()
 
@@ -134,6 +137,37 @@ class MainFrame(urwid.Frame):
         # Add all the notes to the listbox.
         self.filter(self.search_box.edit_text)
 
+    def get_selected_note(self):
+        return self._selected_note
+
+    def set_selected_note(self, note):
+        """Select the given note.
+
+        Make the note appear focused in the list box, and the note's title
+        autocompleted in the search box.
+
+        """
+        self._selected_note = note
+
+        if note:
+
+            self.search_box.autocomplete_text = note.title
+
+            # Focus the list box so the focused note will look selected.
+            self.set_focus("body")
+
+            # Tell list box to focus the note.
+            self.list_box.focus_note(note)
+
+        else:
+
+            self.search_box.autocomplete_text = None
+
+            # Unfocus the listbox so no list item widget will look selected.
+            self.set_focus("header")
+
+    selected_note = property(get_selected_note, set_selected_note)
+
     def quit(self):
         """Quit the app."""
 
@@ -143,22 +177,22 @@ class MainFrame(urwid.Frame):
 
         maxcol, maxrow = size
 
-        if key in ["esc"]:
-            # Esc clears the search box, Esc again quits the app.
-            if self.search_box.text:
+        if key in ["esc", "ctrl d"]:
+            if self.selected_note:
+                self.selected_note = None
+                self.suppress_filter = True
+                self.search_box.set_edit_text(self.search_box.edit_text)
+                return None
+            elif self.search_box.edit_text:
                 self.search_box.set_edit_text("")
                 return None
             else:
                 self.quit()
 
-        elif key in ["ctrl d"]:
-            self.select(None)
-            return None
-
         elif key in ["enter"]:
-            if self.list_box.focus:
+            if self.selected_note:
                 system('{0} "{1}"'.format("vim",
-                    self.list_box.focus.base_widget.note.abspath))
+                    self.selected_note.abspath))
             else:
                 note = self.notebook.add_new(self.search_box.text)
                 system('{0} "{1}"'.format("vim", note.abspath))
@@ -176,30 +210,6 @@ class MainFrame(urwid.Frame):
 
         else:
             return self.search_box.keypress((maxcol,), key)
-
-    def select(self, note):
-        """Select the given note.
-
-        Make the note appear focused in the list box, and the note's title
-        autocompleted in the search box.
-
-        """
-        if note:
-
-            self.search_box.autocomplete_text = note.title
-
-            # Focus the list box so the focused note will look selected.
-            self.set_focus("body")
-
-            # Tell list box to focus the note.
-            self.list_box.focus_note(note)
-
-        else:
-
-            self.search_box.autocomplete_text = None
-
-            # Unfocus the listbox so no list item widget will look selected.
-            self.set_focus("header")
 
     def filter(self, query):
         """Do the synchronised list box filter and search box autocomplete.
@@ -220,12 +230,15 @@ class MainFrame(urwid.Frame):
 
         # Select the first autocompletable note.
         if autocompletable_matches:
-            self.select(autocompletable_matches[0])
+            self.selected_note = autocompletable_matches[0]
         else:
-            self.select(None)
+            self.selected_note = None
 
     def on_search_box_changed(self, edit, new_edit_text):
-        self.filter(new_edit_text)
+        if self.suppress_filter:
+            self.suppress_filter = False
+        else:
+            self.filter(new_edit_text)
 
 palette = [
     ('list nofocus', 'default', 'default', '', '', ''),
