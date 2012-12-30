@@ -6,8 +6,8 @@ Choose a better palette and other basic appearance improvements
 
 Autocomplete:
 x Esc or ctrl-d should clear selected note and autocomplete text
-- left and right arrows, backspace, etc. should accept autocomplete text
-- Tab to move from one matching note to the next
+x Tab should consume autocomplete text
+- Tab again to move from one matching note to the next
 - Handle up and down arrows and pgup and pgdn, manually selecting a note in
   the list box should put its title in the search box also
 

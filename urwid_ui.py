@@ -65,6 +65,18 @@ class AutocompleteWidget(urwid.Edit):
                 ('autocomplete', len(text_to_show) - len(typed_text))]
         return (text_to_show, attrs)
 
+    def consume(self):
+        """Consume the autocomplete text, turning it into typed text."""
+
+        if self.autocomplete_text and (
+                len(self.edit_text) < len(self.autocomplete_text)):
+            self.set_edit_text(self.autocomplete_text)
+            self.move_cursor_to_coords((1,), len(self.autocomplete_text), 0)
+            self.autocomplete_text = None
+            return True
+        else:
+            return False
+
 
 class NoteFilterListBox(urwid.ListBox):
     """A filterable list of notes from a notebook."""
@@ -198,6 +210,9 @@ class MainFrame(urwid.Frame):
                 system('{0} "{1}"'.format("vim", note.abspath))
             self.filter(self.search_box.edit_text)
             return None
+
+        elif self.selected_note and key in ["tab"]:
+            self.search_box.consume()
 
         elif key in ("up", "down", "page up", "page down"):
             self.set_focus("body")
