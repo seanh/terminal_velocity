@@ -4,13 +4,12 @@ Sort notes most recently modified at top
 
 Choose a better palette and other basic appearance improvements
 
-Smarter search box:
-Auto-complete a note's title and select it if it starts with search terms
-Selecting a note should place its title in the search box
-Use the search box contents to decide what to open on <Enter>, if a note
-is autocompleted open it if not open a new note
-ctrl-d deselects a selected note
-Tab consumes the autocomplete ghost text
+Autocomplete:
+- Esc or ctrl-d should clear selected note and autocomplete text
+- left and right arrows, backspace, etc. should accept autocomplete text
+- Tab to move from one matching note to the next
+- Handle up and down arrows and pgup and pgdn, manually selecting a note in
+  the list box should put its title in the search box also
 
 'You have no notes yet' or 'Enter to create new note' in empty list
 
@@ -29,9 +28,13 @@ ctrl-del to delete note
 Note body previews
 
 If no note is selected and the user hits down, first note should be
-selected (not second)
+selected (not second) (this is also a problem with pgdn)
 
 Add an informative footer. My idea is to have it say what version of Terminal
 Velocity you're running, where your notes dir is, and how many notes you have,
 but also to use it to show warnings and error messages (or debug messages in
 debug mode), messages about git integration, etc.
+
+Add updated column to note list
+
+Make title and updated columns clickable, to change sort order
