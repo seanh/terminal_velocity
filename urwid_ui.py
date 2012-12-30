@@ -228,8 +228,8 @@ class MainFrame(urwid.Frame):
         self.filter(new_edit_text)
 
 palette = [
-    ('list nofocus', 'white', 'dark gray', '', '', ''),
-    ('list focus', 'black', 'light gray', '', '', ''),
+    ('list nofocus', 'default', 'default', '', '', ''),
+    ('list focus', 'black', 'brown', '', '', ''),
     ('search', 'default', 'default', '', '', ''),
     ('autocomplete', 'black', 'brown', '', '', ''),
     ]
