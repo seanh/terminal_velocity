@@ -1,44 +1,22 @@
-Copy over command-line options and other niceties and details from `note`.
-
 Sort notes most recently modified at top
-
+Copy over command-line options and other niceties and details from `note`
+Don't create a note with no title (implement in notebook.py)
 Choose a better palette and other basic appearance improvements
-
-Autocomplete:
-x Esc or ctrl-d should clear selected note and autocomplete text
-x Tab should consume autocomplete text
-- Tab again to move from one matching note to the next
-x Handle up and down arrows and pgup and pgdn, manually selecting a note in
-  the list box should put its title in the search box also
-x Handle backspace
-
-'You have no notes yet' or 'Enter to create new note' in empty list
-
-More efficient search algorithm.
-
+Repeatedly pressing Tab should cycle between title prefix matches
+Show "You have no notes yet" in list box when no notes
+Show "No matching notes" in list box when no matching notes
+Show some placeholder text in search box when nothing there?
+Add an informative footer (Terminal Velocity version, number of notes, logs)
+Add 'Updated' column to list box
+Add 'Title' and 'Updated' column titles
+Make column titles clickable to change sort order
+Add keyboard shortcuts for changing sort order
+Add options for more columns? Created?
+ctrl-j, ctrl-k to move up and down in list -- something seems to interfere
 ctrl-r to rename notes in list
-
-ctrl-j, ctrl-k to move up and down in list
-Something seems to be interfering here.
-
-shift-ctrl-v (or something else) to paste clipboard as new note.
-But how do you choose the note title and body?
-
-ctrl-del to delete note
-
+ctrl-del to delete note, with confirmation
+Paste clipboard as new note (Shift-Ctrl-V in Notational Velocity)
 Note body previews
-
-x If no note is selected and the user hits down, first note should be selected (not second)
-
-Add an informative footer. My idea is to have it say what version of Terminal
-Velocity you're running, where your notes dir is, and how many notes you have,
-but also to use it to show warnings and error messages (or debug messages in
-debug mode), messages about git integration, etc.
-
-Add updated column to note list
-
-Make title and updated columns clickable, to change sort order
-
-Don't create a note with no title
-
-
+Git integration
+Faster search algorithm
+Package it
