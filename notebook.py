@@ -85,6 +85,13 @@ class NewNoteError(Error):
         return repr(self.value)
 
 
+class NoteAlreadyExistsError(NewNoteError):
+    """Exception raised when trying to add a new note that already exists.
+
+    """
+    pass
+
+
 class DelNoteError(Error):
     """Exception raised if removing a Note from a NoteBook fails.
 
@@ -294,6 +301,9 @@ class PlainTextNoteBook(object):
 
         Raises NewNoteError if creating or adding the Note fails.
 
+        Raises NoteAlreadyExistsError if creating or adding the Note fails
+        because this NoteBook already contains a Note with the given title.
+
         Notes can be added to subdirectories of the notebook directory by
         putting slashes in their titles, e.g.
         "programming/python/How to use Decorators in Python"
@@ -311,7 +321,7 @@ class PlainTextNoteBook(object):
         # extension.
         for note in self._notes:
             if note.title == title and note.extension == extension:
-                raise NewNoteError("Note already in NoteBook")
+                raise NoteAlreadyExistsError("Note already in NoteBook")
 
         # Ok, add the note.
         note = PlainTextNote(title, self, extension)
