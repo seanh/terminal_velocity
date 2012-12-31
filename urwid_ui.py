@@ -105,6 +105,7 @@ class NoteFilterListBox(urwid.ListBox):
             changes, the new focused note will be passed as argument
 
         """
+        self.fakefocus = False
         self.list_walker = urwid.SimpleFocusListWalker([])
         self.widgets = {}  # NoteWidget cache.
         super(NoteFilterListBox, self).__init__(self.list_walker)
@@ -114,6 +115,9 @@ class NoteFilterListBox(urwid.ListBox):
         return self.focus.base_widget.note
 
     selected_note = property(get_selected_note)
+
+    def render(self, size, focus=False):
+        return super(NoteFilterListBox, self).render(size, self.fakefocus)
 
     def filter(self, matching_notes):
         """Filter this listbox to show only widgets for matching notes."""
@@ -190,7 +194,7 @@ class MainFrame(urwid.Frame):
                 self.on_search_box_changed)
 
         super(MainFrame, self).__init__(header=self.search_box,
-                body=self.list_box, focus_part="header")
+                body=self.list_box, focus_part="body")
 
         # Add all the notes to the listbox.
         self.filter(self.search_box.edit_text)
@@ -213,7 +217,7 @@ class MainFrame(urwid.Frame):
             self.search_box.autocomplete_text = note.title
 
             # Focus the list box so the focused note will look selected.
-            self.set_focus("body")
+            self.list_box.fakefocus = True
 
             # Tell list box to focus the note.
             self.list_box.focus_note(note)
@@ -223,7 +227,7 @@ class MainFrame(urwid.Frame):
             self.search_box.autocomplete_text = None
 
             # Unfocus the listbox so no list item widget will look selected.
-            self.set_focus("header")
+            self.list_box.fakefocus = False
 
         self._selected_note = note
 
@@ -276,7 +280,7 @@ class MainFrame(urwid.Frame):
                 return self.search_box.keypress((maxcol,), key)
 
         elif key in ("up", "down", "page up", "page down"):
-            self.set_focus("body")
+            self.list_box.fakefocus = True
             return super(MainFrame, self).keypress(size, key)
 
         elif key in ["backspace"]:
