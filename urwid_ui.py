@@ -14,8 +14,11 @@ import notebook
 def system(cmd):
     """Execute a system command in a subshell and return the exit status."""
 
+    loop.screen.stop()
     p = subprocess.Popen(cmd, shell=True)
-    return os.waitpid(p.pid, 0)[1]
+    status = os.waitpid(p.pid, 0)[1]
+    loop.screen.start()
+    return status
 
 
 # TODO: This widget will have to get smarter to implement note renaming.
@@ -265,6 +268,7 @@ class MainFrame(urwid.Frame):
             else:
                 note = self.notebook.add_new(self.search_box.text)
                 system('{0} "{1}"'.format("vim", note.abspath))
+            self.suppress_focus = True
             self.filter(self.search_box.edit_text)
             return None
 
