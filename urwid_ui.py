@@ -42,12 +42,12 @@ class AutocompleteWidget(urwid.Edit):
     If you set the .autocomplete_text attribute, it will be shown to the user
     as an autocomplete suggestion.
 
-    Also has a .fakefocus attribute that, if set to True, makes the widget
+    Also has a .fake_focus attribute that, if set to True, makes the widget
     look like it has the keyboard focus even when it doesn't.
 
     """
     def __init__(self, *args, **kwargs):
-        self.fakefocus = True
+        self.fake_focus = True
         self._autocomplete_text = None
         return super(AutocompleteWidget, self).__init__(*args, **kwargs)
 
@@ -61,7 +61,7 @@ class AutocompleteWidget(urwid.Edit):
     autocomplete_text = property(get_autocomplete_text, set_autocomplete_text)
 
     def render(self, size, focus=False):
-        return super(AutocompleteWidget, self).render(size, self.fakefocus)
+        return super(AutocompleteWidget, self).render(size, self.fake_focus)
 
     def get_text(self):
         if not self.autocomplete_text:
@@ -108,7 +108,7 @@ class NoteFilterListBox(urwid.ListBox):
             changes, the new focused note will be passed as argument
 
         """
-        self.fakefocus = False
+        self._fake_focus = False
         self.list_walker = urwid.SimpleFocusListWalker([])
         self.widgets = {}  # NoteWidget cache.
         super(NoteFilterListBox, self).__init__(self.list_walker)
@@ -119,8 +119,17 @@ class NoteFilterListBox(urwid.ListBox):
 
     selected_note = property(get_selected_note)
 
+    def get_fake_focus(self):
+        return self._fake_focus
+
+    def set_fake_focus(self, value):
+        self._fake_focus = value
+        self._invalidate()
+
+    fake_focus = property(get_fake_focus, set_fake_focus)
+
     def render(self, size, focus=False):
-        return super(NoteFilterListBox, self).render(size, self.fakefocus)
+        return super(NoteFilterListBox, self).render(size, self.fake_focus)
 
     def filter(self, matching_notes):
         """Filter this listbox to show only widgets for matching notes."""
@@ -220,7 +229,7 @@ class MainFrame(urwid.Frame):
             self.search_box.autocomplete_text = note.title
 
             # Focus the list box so the focused note will look selected.
-            self.list_box.fakefocus = True
+            self.list_box.fake_focus = True
 
             # Tell list box to focus the note.
             self.list_box.focus_note(note)
@@ -230,7 +239,7 @@ class MainFrame(urwid.Frame):
             self.search_box.autocomplete_text = None
 
             # Unfocus the listbox so no list item widget will look selected.
-            self.list_box.fakefocus = False
+            self.list_box.fake_focus = False
 
         self._selected_note = note
 
@@ -252,8 +261,6 @@ class MainFrame(urwid.Frame):
             if self.selected_note:
                 # Clear the selected note.
                 self.selected_note = None
-                self.suppress_filter = True
-                self.search_box.set_edit_text(self.search_box.edit_text)
                 return None
             elif self.search_box.edit_text:
                 self.search_box.set_edit_text("")
@@ -284,12 +291,11 @@ class MainFrame(urwid.Frame):
                 return self.search_box.keypress((maxcol,), key)
 
         elif key in ["down"]:
-            if not self.list_box.fakefocus:
+            if not self.list_box.fake_focus:
                 # If no note is focused make pressing down focus the first
                 # note (not the second, as it would do if we just passed this
                 # keypress straight to the list box).
-                self.list_box.fakefocus = True
-                self.list_box._invalidate()
+                self.list_box.fake_focus = True
                 self.on_list_box_changed(self.list_box.selected_note)
                 return None
             else:
