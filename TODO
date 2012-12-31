@@ -8,8 +8,9 @@ Autocomplete:
 x Esc or ctrl-d should clear selected note and autocomplete text
 x Tab should consume autocomplete text
 - Tab again to move from one matching note to the next
-- Handle up and down arrows and pgup and pgdn, manually selecting a note in
+x Handle up and down arrows and pgup and pgdn, manually selecting a note in
   the list box should put its title in the search box also
+x Handle backspace
 
 'You have no notes yet' or 'Enter to create new note' in empty list
 

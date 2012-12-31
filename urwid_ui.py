@@ -45,25 +45,41 @@ class AutocompleteWidget(urwid.Edit):
     """
     def __init__(self, *args, **kwargs):
         self.fakefocus = True
-        self.autocomplete_text = None
+        self._autocomplete_text = None
         return super(AutocompleteWidget, self).__init__(*args, **kwargs)
+
+    def get_autocomplete_text(self):
+        return self._autocomplete_text
+
+    def set_autocomplete_text(self, text):
+        self._autocomplete_text = text
+        self._invalidate()
+
+    autocomplete_text = property(get_autocomplete_text, set_autocomplete_text)
 
     def render(self, size, focus=False):
         return super(AutocompleteWidget, self).render(size, self.fakefocus)
 
     def get_text(self):
-        result = super(AutocompleteWidget, self).get_text()
-        typed_text = result[0]
+        if not self.autocomplete_text:
+            return super(AutocompleteWidget, self).get_text()
 
-        if (not self.autocomplete_text) or (not typed_text):
-            return result
+        typed_text = self.edit_text
+        is_substring = self.autocomplete_text.lower().startswith(
+                typed_text.lower())
 
-        # Show the typed text followed by the autocomplete suggestion in a
-        # different style.
-        text_to_show = typed_text + self.autocomplete_text[len(typed_text):]
-        attrs = [('search', len(typed_text)),
-                ('autocomplete', len(text_to_show) - len(typed_text))]
-        return (text_to_show, attrs)
+        if typed_text and is_substring:
+            # Show the typed text followed by the autocomplete suggestion in a
+            # different style.
+            text_to_show = typed_text + self.autocomplete_text[
+                    len(typed_text):]
+            attrs = [('search', len(typed_text)),
+                    ('autocomplete', len(text_to_show) - len(typed_text))]
+            return (text_to_show, attrs)
+        else:
+            # Show only the autocomplete text.
+            return (self.autocomplete_text,
+                    [('autocomplete', len(self.autocomplete_text))])
 
     def consume(self):
         """Consume the autocomplete text, turning it into typed text."""
@@ -81,10 +97,23 @@ class AutocompleteWidget(urwid.Edit):
 class NoteFilterListBox(urwid.ListBox):
     """A filterable list of notes from a notebook."""
 
-    def __init__(self):
+    def __init__(self, on_changed=None):
+        """Initialise a new NoteFilterListBox.
+
+        Keyword arguments:
+        on_changed -- callable that will be called when the focused note
+            changes, the new focused note will be passed as argument
+
+        """
         self.list_walker = urwid.SimpleFocusListWalker([])
         self.widgets = {}  # NoteWidget cache.
         super(NoteFilterListBox, self).__init__(self.list_walker)
+        self.on_changed = on_changed
+
+    def get_selected_note(self):
+        return self.focus.base_widget.note
+
+    selected_note = property(get_selected_note)
 
     def filter(self, matching_notes):
         """Filter this listbox to show only widgets for matching notes."""
@@ -125,6 +154,17 @@ class NoteFilterListBox(urwid.ListBox):
                 self.list_walker.set_focus(self.list_walker.index(widget))
                 break
 
+    def keypress(self, size, key):
+        result = super(NoteFilterListBox, self).keypress(size, key)
+        self.on_changed(self.selected_note)
+        return result
+
+    def mouse_event(self, size, event, button, col, row, focus):
+        result = super(NoteFilterListBox, self).mouse_event(
+                size, event, button, col, row, focus)
+        self.on_changed(self.selected_note)
+        return result
+
 
 class MainFrame(urwid.Frame):
     """The topmost urwid widget."""
@@ -134,11 +174,17 @@ class MainFrame(urwid.Frame):
         self.notebook = notebook.PlainTextNoteBook(
                 "/home/seanh/Dropbox/Notes", "txt")
 
+        # Don't filter the note list when the text in the search box changes.
         self.suppress_filter = False
+
+        # Don't change the focused note when normally it would change
+        # (e.g. when the text in the search box changes)
+        self.suppress_focus = False
+
         self._selected_note = None
 
         self.search_box = AutocompleteWidget(wrap="clip")
-        self.list_box = NoteFilterListBox()
+        self.list_box = NoteFilterListBox(on_changed=self.on_list_box_changed)
 
         urwid.connect_signal(self.search_box, "change",
                 self.on_search_box_changed)
@@ -159,7 +205,8 @@ class MainFrame(urwid.Frame):
         autocompleted in the search box.
 
         """
-        self._selected_note = note
+        if self.suppress_focus:
+            return
 
         if note:
 
@@ -178,6 +225,8 @@ class MainFrame(urwid.Frame):
             # Unfocus the listbox so no list item widget will look selected.
             self.set_focus("header")
 
+        self._selected_note = note
+
     selected_note = property(get_selected_note, set_selected_note)
 
     def quit(self):
@@ -189,8 +238,12 @@ class MainFrame(urwid.Frame):
 
         maxcol, maxrow = size
 
+        self.suppress_filter = False
+        self.suppress_focus = False
+
         if key in ["esc", "ctrl d"]:
             if self.selected_note:
+                # Clear the selected note.
                 self.selected_note = None
                 self.suppress_filter = True
                 self.search_box.set_edit_text(self.search_box.edit_text)
@@ -211,17 +264,37 @@ class MainFrame(urwid.Frame):
             self.filter(self.search_box.edit_text)
             return None
 
-        elif self.selected_note and key in ["tab"]:
-            self.search_box.consume()
+        elif key in ["ctrl q"]:
+            # FIXME: Why doesn't this work? ctrl q doesn't seem to get here.
+            self.quit()
+            raise urwid.ExitMainLoop()
+
+        elif self.selected_note and key in ["tab", "left", "right"]:
+            if self.search_box.consume():
+                return None
+            else:
+                return self.search_box.keypress((maxcol,), key)
 
         elif key in ("up", "down", "page up", "page down"):
             self.set_focus("body")
             return super(MainFrame, self).keypress(size, key)
 
-        elif key in ["ctrl q"]:
-            # FIXME: Why doesn't this work? ctrl q doesn't seem to get here.
-            self.quit()
-            raise urwid.ExitMainLoop()
+        elif key in ["backspace"]:
+            consume = False
+            if self.selected_note:
+                if self.search_box.edit_text == "":
+                    consume = True
+                else:
+                    title = self.selected_note.title.lower()
+                    typed = self.search_box.edit_text.lower()
+                    if not title.startswith(typed):
+                        consume = True
+            if consume:
+                self.search_box.consume()
+            else:
+                self.selected_note = None
+            self.suppress_focus = True
+            return self.search_box.keypress((maxcol,), key)
 
         else:
             return self.search_box.keypress((maxcol,), key)
@@ -230,6 +303,9 @@ class MainFrame(urwid.Frame):
         """Do the synchronised list box filter and search box autocomplete.
 
         """
+        if self.suppress_filter:
+            return
+
         # Find all notes that match the typed text.
         matching_notes = self.notebook.search(query)
 
@@ -250,10 +326,10 @@ class MainFrame(urwid.Frame):
             self.selected_note = None
 
     def on_search_box_changed(self, edit, new_edit_text):
-        if self.suppress_filter:
-            self.suppress_filter = False
-        else:
-            self.filter(new_edit_text)
+        self.filter(new_edit_text)
+
+    def on_list_box_changed(self, note):
+        self.selected_note = note
 
 palette = [
     ('list nofocus', 'default', 'default', '', '', ''),
