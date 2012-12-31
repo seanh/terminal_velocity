@@ -283,9 +283,20 @@ class MainFrame(urwid.Frame):
             else:
                 return self.search_box.keypress((maxcol,), key)
 
-        elif key in ("up", "down", "page up", "page down"):
-            self.list_box.fakefocus = True
-            return super(MainFrame, self).keypress(size, key)
+        elif key in ["down"]:
+            if not self.list_box.fakefocus:
+                # If no note is focused make pressing down focus the first
+                # note (not the second, as it would do if we just passed this
+                # keypress straight to the list box).
+                self.list_box.fakefocus = True
+                self.list_box._invalidate()
+                self.on_list_box_changed(self.list_box.selected_note)
+                return None
+            else:
+                return self.list_box.keypress(size, key)
+
+        elif key in ["up", "page up", "page down"]:
+            return self.list_box.keypress(size, key)
 
         elif key in ["backspace"]:
             consume = False

@@ -28,8 +28,7 @@ ctrl-del to delete note
 
 Note body previews
 
-If no note is selected and the user hits down, first note should be
-selected (not second) (this is also a problem with pgdn)
+x If no note is selected and the user hits down, first note should be selected (not second)
 
 Add an informative footer. My idea is to have it say what version of Terminal
 Velocity you're running, where your notes dir is, and how many notes you have,
@@ -39,3 +38,7 @@ debug mode), messages about git integration, etc.
 Add updated column to note list
 
 Make title and updated columns clickable, to change sort order
+
+Don't create a note with no title
+
+
