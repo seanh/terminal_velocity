@@ -1,3 +1,4 @@
+Better unicode handling
 Repeatedly pressing Tab should cycle between title prefix matches
 Add an informative footer (Terminal Velocity version, number of notes, logs)
 Add 'Updated' column to list box
