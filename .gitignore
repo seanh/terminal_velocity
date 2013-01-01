@@ -2,4 +2,4 @@
 *.swp
 MANIFEST
 dist/*
-Terminal_Velocity.egg-info/
+terminalvelocity.egg-info/
