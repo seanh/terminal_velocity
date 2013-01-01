@@ -21,6 +21,14 @@ def system(cmd):
     return status
 
 
+def placeholder_text(text):
+    """Return a placeholder text widget with the given text."""
+
+    text_widget = urwid.Text(("placeholder", text), align="center")
+    filler_widget = urwid.Filler(text_widget)
+    return filler_widget
+
+
 # TODO: This widget will have to get smarter to implement note renaming.
 class NoteWidget(urwid.Text):
 
@@ -155,6 +163,10 @@ class NoteFilterListBox(urwid.ListBox):
     fake_focus = property(get_fake_focus, set_fake_focus)
 
     def render(self, size, focus=False):
+        if len(self.list_walker) == 0:
+            placeholder = placeholder_text("No matching notes, press Enter to "
+                    "create a new note")
+            return placeholder.render(size)
         return super(NoteFilterListBox, self).render(size, self.fake_focus)
 
     def filter(self, matching_notes):
@@ -362,6 +374,14 @@ class MainFrame(urwid.Frame):
         """
         if self.suppress_filter:
             return
+
+        # If the user has no notes yet show some placeholder text, otherwise
+        # show the note list.
+        if len(self.notebook) == 0:
+            self.body = placeholder_text("You have no notes yet, to create a "
+                    "note type a note title then press Enter")
+        else:
+            self.body = self.list_box
 
         # Find all notes that match the typed text.
         matching_notes = self.notebook.search(query)
