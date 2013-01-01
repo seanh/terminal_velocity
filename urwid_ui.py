@@ -251,7 +251,7 @@ class MainFrame(urwid.Frame):
 
         super(MainFrame, self).__init__(
                 header=urwid.LineBox(self.search_box),
-                body=urwid.Padding(self.list_box, left=1, right=1),
+                body=None,
                 focus_part="body")
 
         # Add all the notes to the listbox.
@@ -392,7 +392,7 @@ class MainFrame(urwid.Frame):
             self.body = placeholder_text("You have no notes yet, to create a "
                     "note type a note title then press Enter")
         else:
-            self.body = self.list_box
+            self.body = urwid.Padding(self.list_box, left=1, right=1)
 
         # Find all notes that match the typed text.
         matching_notes = self.notebook.search(query)
