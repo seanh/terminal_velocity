@@ -228,8 +228,10 @@ class MainFrame(urwid.Frame):
         urwid.connect_signal(self.search_box, "change",
                 self.on_search_box_changed)
 
-        super(MainFrame, self).__init__(header=self.search_box,
-                body=self.list_box, focus_part="body")
+        super(MainFrame, self).__init__(
+                header=urwid.LineBox(self.search_box),
+                body=urwid.Padding(self.list_box, left=1, right=1),
+                focus_part="body")
 
         # Add all the notes to the listbox.
         self.filter(self.search_box.edit_text)
