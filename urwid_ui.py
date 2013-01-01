@@ -81,23 +81,32 @@ class AutocompleteWidget(urwid.Edit):
         return super(AutocompleteWidget, self).render(size, self.fake_focus)
 
     def get_text(self):
+
+        # When search bar is empty show placeholder text.
+        if not self.edit_text and not self.autocomplete_text:
+            placeholder_text = "Find or Create"
+            return (placeholder_text,
+                    [('placeholder', len(placeholder_text))])
+
+        # When no note is focused simply show typed text in search bar.
         if not self.autocomplete_text:
             return super(AutocompleteWidget, self).get_text()
 
-        typed_text = self.edit_text
+        # When a note is focused show it's title in the search bar.
         is_substring = self.autocomplete_text.lower().startswith(
-                typed_text.lower())
-
-        if typed_text and is_substring:
-            # Show the typed text followed by the autocomplete suggestion in a
-            # different style.
-            text_to_show = typed_text + self.autocomplete_text[
-                    len(typed_text):]
-            attrs = [('search', len(typed_text)),
-                    ('autocomplete', len(text_to_show) - len(typed_text))]
+                self.edit_text.lower())
+        if self.edit_text and is_substring:
+            # If the typed text is a substring of the focused note's title,
+            # then show the typed text followed by the rest of the focused
+            # note's title in a different colour.
+            text_to_show = self.edit_text + self.autocomplete_text[
+                    len(self.edit_text):]
+            attrs = [('search', len(self.edit_text)),
+                    ('autocomplete', len(text_to_show) - len(self.edit_text))]
             return (text_to_show, attrs)
         else:
-            # Show only the autocomplete text.
+            # If the typed text is not a prefix of the focused note's title,
+            # just show the focused note's title in the search bar.
             return (self.autocomplete_text,
                     [('autocomplete', len(self.autocomplete_text))])
 
@@ -380,6 +389,7 @@ class MainFrame(urwid.Frame):
         self.selected_note = note
 
 palette = [
+    ('placeholder', 'dark blue', 'default'),
     ('notewidget unfocused', 'default', 'default', '', '', ''),
     ('notewidget focused', 'black', 'brown', '', '', ''),
     ('search', 'default', 'default', '', '', ''),
