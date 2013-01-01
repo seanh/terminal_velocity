@@ -52,11 +52,8 @@ This module provides a simple brute force full text search implementation.
 Other modules could provide better search functions that could be plugged in.
 
 """
-import sys
 import logging
 logger = logging.getLogger(__name__)
-stdout_handler = logging.StreamHandler(sys.stdout)
-logger.addHandler(stdout_handler)
 import os
 import codecs
 

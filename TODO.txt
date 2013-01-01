@@ -1,5 +1,3 @@
-Better logging: log messages should go to a file not stdout, and should be
-    shown to the user in a footer
 Better unicode handling
 Repeatedly pressing Tab should cycle between title prefix matches
 Add an informative footer (Terminal Velocity version, number of notes, logs)
