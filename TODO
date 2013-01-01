@@ -1,6 +1,6 @@
 x Sort notes most recently modified at top
 Copy over command-line options and other niceties and details from `note`
-Don't create a note with no title (implement in notebook.py)
+x Don't create a note with no title
 Choose a better palette and other basic appearance improvements
 Repeatedly pressing Tab should cycle between title prefix matches
 Show "You have no notes yet" in list box when no notes

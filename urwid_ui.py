@@ -271,12 +271,17 @@ class MainFrame(urwid.Frame):
                 system('{0} "{1}"'.format("vim",
                     self.selected_note.abspath))
             else:
-                try:
-                    note = self.notebook.add_new(self.search_box.text)
-                    system('{0} "{1}"'.format("vim", note.abspath))
-                except notebook.NoteAlreadyExistsError:
-                    # Try to open the existing note instead.
-                    system('{0} "{1}"'.format("vim", self.search_box.text))
+                if self.search_box.text:
+                    try:
+                        note = self.notebook.add_new(self.search_box.text)
+                        system('{0} "{1}"'.format("vim", note.abspath))
+                    except notebook.NoteAlreadyExistsError:
+                        # Try to open the existing note instead.
+                        system('{0} "{1}"'.format("vim", self.search_box.text))
+                else:
+                    # Hitting Enter with no note selected and no text typed in
+                    # search box does nothing.
+                    pass
             self.suppress_focus = True
             self.filter(self.search_box.edit_text)
             return None
