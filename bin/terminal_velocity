@@ -1,5 +1,5 @@
 #!/usr/bin/env python2
-"""A fast note-taking app for the unix terminal"""
+"""A fast note-taking app for the UNIX terminal"""
 import argparse
 import ConfigParser
 import os
