@@ -194,11 +194,6 @@ class NoteFilterListBox(urwid.ListBox):
                 self.widgets[note.abspath] = widget
                 matching_widgets.append(widget)
 
-        # Sort the widgets.
-        # TODO: Support different sort orderings.
-        matching_widgets.sort(key=lambda x: x.note.mtime,
-                reverse=True)
-
         # Remove all widgets from the list walker.
         del self.list_walker[:]
 
@@ -396,6 +391,10 @@ class MainFrame(urwid.Frame):
 
         # Find all notes that match the typed text.
         matching_notes = self.notebook.search(query)
+
+        # Sort the notes.
+        # TODO: Support different sort orderings.
+        matching_notes.sort(key=lambda x: x.mtime, reverse=True)
 
         # Tell the list box to show only the matching notes.
         self.list_box.filter(matching_notes)
