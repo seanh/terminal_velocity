@@ -333,6 +333,10 @@ class PlainTextNoteBook(object):
         if extension is None:
             extension = self.extension
 
+        # Don't create notes outside of the notes dir.
+        if title.startswith(os.sep):
+            title = title[len(os.sep):]
+
         # Check that we don't already have a note with the same title and
         # extension.
         for note in self._notes:
