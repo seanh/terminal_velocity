@@ -313,10 +313,8 @@ class MainFrame(urwid.Frame):
             self.filter(self.search_box.edit_text)
             return None
 
-        elif key in ["ctrl q"]:
-            # FIXME: Why doesn't this work? ctrl q doesn't seem to get here.
+        elif key in ["ctrl x"]:
             self.quit()
-            raise urwid.ExitMainLoop()
 
         elif self.selected_note and key in ["tab", "left", "right"]:
             if self.search_box.consume():
