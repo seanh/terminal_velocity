@@ -6,8 +6,6 @@ UNIX terminal, it's a clone of the OS X app [Notational
 Velocity](http://notational.net/) that runs in a terminal and uses your
 `$EDITOR`.
 
-<div><script id="playterm-MjAxMi0wMi94ZGVidWd0dHlyZWMtMTMzMDMzNzk4NHw4MHgyNA==" type="text/javascript" src="http://www.playterm.org/js/?hash=MjAxMi0wMi94ZGVidWd0dHlyZWMtMTMzMDMzNzk4NHw4MHgyNA==" class="size:80x24"></script></div>
-
 <!-- Insert video here -->
 
 
