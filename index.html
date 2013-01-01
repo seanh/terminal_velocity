@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <title>Terminal velocity by seanh</title>
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>Terminal velocity</h1>
+        <h2>A fast note-taking app for the UNIX terminal</h2>
+
+        <section id="downloads">
+          <a href="https://github.com/seanh/terminal_velocity/zipball/master" class="btn">Download as .zip</a>
+          <a href="https://github.com/seanh/terminal_velocity/tarball/master" class="btn">Download as .tar.gz</a>
+          <a href="https://github.com/seanh/terminal_velocity" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <p>Terminal Velocity is a fast, cross-platform note-taking application for the
+UNIX terminal, it's a clone of the OS X app <a href="http://notational.net/">Notational
+Velocity</a> that runs in a terminal and uses your
+<code>$EDITOR</code>.</p>
+
+
+
+<h3>Install</h3>
+
+<p>To install Terminal Velocity, run:</p>
+
+<pre><code>pip install terminal_velocity
+</code></pre>
+
+<p>Then to launch it just run:</p>
+
+<pre><code>terminal_velocity
+</code></pre>
+
+<p>To use a different notes directory, run:</p>
+
+<pre><code>terminal_velocity path/to/your/notes/dir
+</code></pre>
+
+<p>To quit the app, press <code>ctrl-x</code>.</p>
+
+<h3>Create Notes</h3>
+
+
+
+<p>To create a new note, type a title for the note and hit <code>enter</code>. The note will
+be opened in your text editor. As you type the title, the list of notes filters
+to show notes that match what you've typed, giving you a chance to open a
+related note instead of making a new one.</p>
+
+<h3>Find Notes</h3>
+
+
+
+<p>The same text area is used for entering the titles of new notes and for
+searching notes. To find and open a note, type some words from the note's title
+or contents. The list of notes filters as you type to show only matching notes.
+When you see the note that you want, use the <code>up</code> and <code>down</code> arrows to select
+it then hit <code>enter</code> to open it. You can also use <code>page up</code> and <code>page down</code> or
+mouse clicks to select notes.</p>
+
+<h3>Autocomplete</h3>
+
+
+
+<p>If you type the beginning of a note's title (case-insensitive), that note will
+be automatically selected in the note list and its title will be autocompleted
+in the search box. Whenever a note is selected, just hit <code>enter</code> to open that
+note.</p>
+
+<p>If you want to create a new note whose title is a substring of an existing
+note's title, then even after you've typed the full title for your new note the
+existing note will still be selected by the autocomplete. In this case, you
+have to hit <code>ctrl-d</code> or <code>escape</code> to clear the autocomplete selection, then hit
+<code>enter</code> to create your note.</p>
+
+<h3>Configuration</h3>
+
+<p>The location of the notes directory, the text editor, the filename extension
+for new notes, etc. can be configured using command-line options or a config
+file. For details, run:</p>
+
+<pre><code>terminal_velocity -h
+</code></pre>
+
+<h3>Syncing</h3>
+
+<p>Since your notes are just a directory of plain text files, it's easy to sync
+them using Dropbox, Ubuntu One, Unison, git, etc. Just use a notes directory in
+your Dropbox or Ubuntu One directory, in a git repository, etc.</p>
+
+<h3>Details</h3>
+
+<p>Notes are kept as plain text files in a notes directory (<code>~/Notes</code> by default).</p>
+
+<p>Notes are sorted by modification date, most recently modified at the top.</p>
+
+<p>The search is fuzzy. A note will match a search term if it contains all of the
+given search words anywhere in its title or body, the words don't have to
+appear consecutively or in the same order.</p>
+
+<p>The search is smart-case. For each search word, if the word is all lower-case
+then it will be matched case-insensitively. If the word contains any upper-case
+letters then it will be matched case-sensitively.</p>
+
+<p>Subdirectories in your notes directory are searched recursively. To create a
+new note in a subdirectory, just give the subdir(s) as part of the note's
+title, e.g.: <code>programming/python/How to use decorators in Python</code></p>
+
+<p>You can have note files with different filename extensions. All the files in
+your notes directory are searched, regardless of filename extension. To create
+a note with a different filename extension use the <code>--extension</code> option.</p>
+
+<p>Terminal Velocity doesn't support renaming or moving notes yet, but you can
+move note files (and edit their contents) using other tools, this will not
+interfere with Terminal Velocity as long as you don't do it while Terminal
+Velocity is running.</p>
+
+<h3>Credits</h3>
+
+<p>User interaction copied from <a href="http://notational.net/">Notational Velocity</a>.</p>
+
+<p>Some code snippets ideas borrowed from
+<a href="https://github.com/drewm1980/nv-console">Andrew Wagner</a> and
+<a href="https://bitbucket.org/simongreenhill/n">Simon Greenhill</a>.</p>
+
+<p>Written in <a href="http://www.python.org/">Python</a> using
+<a href="http://excess.org/urwid/">Urwid</a>.</p>
+      </section>
+    </div>
+
+    
+  </body>
+</html>
