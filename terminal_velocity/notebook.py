@@ -52,8 +52,11 @@ This module provides a simple brute force full text search implementation.
 Other modules could provide better search functions that could be plugged in.
 
 """
+import sys
 import logging
 logger = logging.getLogger(__name__)
+stdout_handler = logging.StreamHandler(sys.stdout)
+logger.addHandler(stdout_handler)
 import os
 import codecs
 
@@ -165,7 +168,13 @@ class PlainTextNote(object):
     @property
     def contents(self):
         # FIXME: Encoding should be a config option.
-        _contents = codecs.open(self.abspath, 'r', encoding="utf-8").read()
+        try:
+            _contents = codecs.open(self.abspath, "r", encoding="utf-8").read()
+        except UnicodeDecodeError as e:
+            logger.error(
+                    "UnicodeDecodeError when reading file {0}: {1}".format(
+                        self.abspath, e))
+            _contents = ""
         return _contents
 
     @property
@@ -280,6 +289,12 @@ class PlainTextNoteBook(object):
                 abspath = os.path.join(root, filename)
                 relpath = os.path.relpath(abspath, self.path)
                 relpath, ext = os.path.splitext(relpath)
+                try:
+                    relpath = unicode(relpath)
+                except UnicodeDecodeError as e:
+                    logger.error("UnicodeDecodeError with filename for note "
+                            "{0}: {1}".format(relpath, e))
+                    continue
                 self.add_new(title=relpath, extension=ext)
 
     @property
