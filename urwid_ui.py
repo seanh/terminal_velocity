@@ -148,19 +148,17 @@ class NoteFilterListBox(urwid.ListBox):
                 self.widgets[note.abspath] = widget
                 matching_widgets.append(widget)
 
-        # Remove widgets from list_walker that don't match the query.
-        widgets_to_remove = []
-        for widget in self.list_walker:
-            if widget not in matching_widgets:
-                widgets_to_remove.append(widget)
-        for widget in widgets_to_remove:
-            self.list_walker.remove(widget)
+        # Sort the widgets.
+        # TODO: Support different sort orderings.
+        matching_widgets.sort(key=lambda x: x.base_widget.note.mtime,
+                reverse=True)
 
-        # Add widgets to list_walker if they match the query and aren't already
-        # in list_walker.
+        # Remove all widgets from the list walker.
+        del self.list_walker[:]
+
+        # Add all the matching widgets to the list walker, in order.
         for widget in matching_widgets:
-            if widget not in self.list_walker:
-                self.list_walker.append(widget)
+            self.list_walker.append(widget)
 
     def focus_note(self, note):
         """Focus the widget for the given note."""

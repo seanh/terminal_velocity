@@ -1,4 +1,4 @@
-Sort notes most recently modified at top
+x Sort notes most recently modified at top
 Copy over command-line options and other niceties and details from `note`
 Don't create a note with no title (implement in notebook.py)
 Choose a better palette and other basic appearance improvements

@@ -170,8 +170,7 @@ class PlainTextNote(object):
 
     @property
     def mtime(self):
-        # TODO: Read mtime from file.
-        raise NotImplementedError
+        return os.path.getmtime(self.abspath)
 
     @property
     def abspath(self):
