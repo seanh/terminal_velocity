@@ -4,8 +4,6 @@ Add 'Updated' column to list box
 Add 'Title' and 'Updated' column titles
 Make column titles clickable to change sort order
 Add keyboard shortcuts for changing sort order
-Add options for more columns? Created?
-ctrl-j, ctrl-k to move up and down in list -- something seems to interfere
 ctrl-r to rename notes in list
 ctrl-del to delete note, with confirmation
 Paste clipboard as new note (Shift-Ctrl-V in Notational Velocity)
