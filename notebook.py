@@ -243,7 +243,9 @@ class PlainTextNoteBook(object):
         search_function -- the function to call to search the notebook
 
         """
-        self._path = path
+        # Expand ~ in path, and transform it into an absolute path.
+        self._path = os.path.abspath(os.path.expanduser(path))
+
         if extension and not extension.startswith("."):
             extension = "." + extension
         self.extension = extension
