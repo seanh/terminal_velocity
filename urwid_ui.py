@@ -11,7 +11,16 @@ import urwid
 import notebook
 
 
-def system(cmd):
+palette = [
+    ('placeholder', 'dark blue', 'default'),
+    ('notewidget unfocused', 'default', 'default', '', '', ''),
+    ('notewidget focused', 'black', 'brown', '', '', ''),
+    ('search', 'default', 'default', '', '', ''),
+    ('autocomplete', 'black', 'brown', '', '', ''),
+    ]
+
+
+def system(cmd, loop):
     """Execute a system command in a subshell and return the exit status."""
 
     loop.screen.stop()
@@ -220,10 +229,10 @@ class NoteFilterListBox(urwid.ListBox):
 class MainFrame(urwid.Frame):
     """The topmost urwid widget."""
 
-    def __init__(self):
+    def __init__(self, notes_dir, editor, extension):
 
-        self.notebook = notebook.PlainTextNoteBook(
-                "/home/seanh/Dropbox/Notes", "txt")
+        self.editor = editor
+        self.notebook = notebook.PlainTextNoteBook(notes_dir, extension)
 
         # Don't filter the note list when the text in the search box changes.
         self.suppress_filter = False
@@ -307,16 +316,18 @@ class MainFrame(urwid.Frame):
 
         elif key in ["enter"]:
             if self.selected_note:
-                system('{0} "{1}"'.format("vim",
-                    self.selected_note.abspath))
+                system('{0} "{1}"'.format(self.editor,
+                    self.selected_note.abspath), self.loop)
             else:
                 if self.search_box.text:
                     try:
                         note = self.notebook.add_new(self.search_box.text)
-                        system('{0} "{1}"'.format("vim", note.abspath))
+                        system('{0} "{1}"'.format(self.editor, note.abspath),
+                                self.loop)
                     except notebook.NoteAlreadyExistsError:
                         # Try to open the existing note instead.
-                        system('{0} "{1}"'.format("vim", self.search_box.text))
+                        system('{0} "{1}"'.format(self.editor,
+                            self.search_box.text), self.loop)
                 else:
                     # Hitting Enter with no note selected and no text typed in
                     # search box does nothing.
@@ -408,13 +419,10 @@ class MainFrame(urwid.Frame):
     def on_list_box_changed(self, note):
         self.selected_note = note
 
-palette = [
-    ('placeholder', 'dark blue', 'default'),
-    ('notewidget unfocused', 'default', 'default', '', '', ''),
-    ('notewidget focused', 'black', 'brown', '', '', ''),
-    ('search', 'default', 'default', '', '', ''),
-    ('autocomplete', 'black', 'brown', '', '', ''),
-    ]
-frame = MainFrame()
-loop = urwid.MainLoop(frame, palette)
-loop.run()
+
+def launch(notes_dir, editor, extension):
+    """Launch the user interface."""
+    frame = MainFrame(notes_dir, editor, extension)
+    loop = urwid.MainLoop(frame, palette)
+    frame.loop = loop
+    loop.run()
