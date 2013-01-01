@@ -1,11 +1,5 @@
-x Sort notes most recently modified at top
 Copy over command-line options and other niceties and details from `note`
-x Don't create a note with no title
-Choose a better palette and other basic appearance improvements
 Repeatedly pressing Tab should cycle between title prefix matches
-Show "You have no notes yet" in list box when no notes
-Show "No matching notes" in list box when no matching notes
-Show some placeholder text in search box when nothing there?
 Add an informative footer (Terminal Velocity version, number of notes, logs)
 Add 'Updated' column to list box
 Add 'Title' and 'Updated' column titles
@@ -20,3 +14,8 @@ Note body previews
 Git integration
 Faster search algorithm
 Package it
+Add an option for which filename extensions will be read as notes
+Remember typed text, selected note, etc. when quitting and restarting
+Make the interface strings translatable
+ctrl-h should bring up a dialog box with some usage instructions and a list of
+    keyboard commands
