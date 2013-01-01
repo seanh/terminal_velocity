@@ -22,7 +22,6 @@ def system(cmd):
 
 
 # TODO: This widget will have to get smarter to implement note renaming.
-# TODO: Make it so I don't have to wrap these widgets in AttrMaps.
 class NoteWidget(urwid.Text):
 
     def __init__(self, note):
@@ -34,6 +33,24 @@ class NoteWidget(urwid.Text):
 
     def keypress(self, size, key):
         return key
+
+    # FIXME: Is this the best way to do this?
+    # The point is that I want the "notewidget focused" and
+    # "notewidget unfocused" display attributes to apply to notewidgets, but
+    # I want to be able to just use NoteWidget objects directly and not have
+    # to wrap them in AttrMap objects, because I want to be able to use
+    # notewidget.note and not have to do notewidget.base_widget.note.
+    def render(self, size, focus=False):
+        """Render the widget applying focused and unfocused display attrs."""
+
+        if focus:
+            attr_map = {None: "notewidget focused"}
+        else:
+            attr_map = {None: "notewidget unfocused"}
+        canv = super(NoteWidget, self).render(size, focus=focus)
+        canv = urwid.CompositeCanvas(canv)
+        canv.fill_attr_apply(attr_map)
+        return canv
 
 
 class AutocompleteWidget(urwid.Edit):
@@ -115,7 +132,7 @@ class NoteFilterListBox(urwid.ListBox):
         self.on_changed = on_changed
 
     def get_selected_note(self):
-        return self.focus.base_widget.note
+        return self.focus.note
 
     selected_note = property(get_selected_note)
 
@@ -143,14 +160,13 @@ class NoteFilterListBox(urwid.ListBox):
             if widget:
                 matching_widgets.append(widget)
             else:
-                widget = urwid.AttrMap(NoteWidget(note), "list nofocus",
-                        "list focus")
+                widget = NoteWidget(note)
                 self.widgets[note.abspath] = widget
                 matching_widgets.append(widget)
 
         # Sort the widgets.
         # TODO: Support different sort orderings.
-        matching_widgets.sort(key=lambda x: x.base_widget.note.mtime,
+        matching_widgets.sort(key=lambda x: x.note.mtime,
                 reverse=True)
 
         # Remove all widgets from the list walker.
@@ -164,7 +180,7 @@ class NoteFilterListBox(urwid.ListBox):
         """Focus the widget for the given note."""
 
         for widget in self.list_walker:
-            if widget.base_widget.note == note:
+            if widget.note == note:
                 self.list_walker.set_focus(self.list_walker.index(widget))
                 break
 
@@ -364,8 +380,8 @@ class MainFrame(urwid.Frame):
         self.selected_note = note
 
 palette = [
-    ('list nofocus', 'default', 'default', '', '', ''),
-    ('list focus', 'black', 'brown', '', '', ''),
+    ('notewidget unfocused', 'default', 'default', '', '', ''),
+    ('notewidget focused', 'black', 'brown', '', '', ''),
     ('search', 'default', 'default', '', '', ''),
     ('autocomplete', 'black', 'brown', '', '', ''),
     ]
