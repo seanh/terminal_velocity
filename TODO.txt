@@ -12,7 +12,6 @@ Paste clipboard as new note (Shift-Ctrl-V in Notational Velocity)
 Note body previews
 Git integration
 Faster search algorithm
-Package it
 Add an option for which filename extensions will be read as notes
 Remember typed text, selected note, etc. when quitting and restarting
 Make the interface strings translatable
