@@ -4,7 +4,7 @@ import argparse
 import ConfigParser
 import os
 
-import urwid_ui
+import terminal_velocity.urwid_ui as urwid_ui
 
 
 def main():
