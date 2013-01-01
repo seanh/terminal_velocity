@@ -1,4 +1,3 @@
-Copy over command-line options and other niceties and details from `note`
 Repeatedly pressing Tab should cycle between title prefix matches
 Add an informative footer (Terminal Velocity version, number of notes, logs)
 Add 'Updated' column to list box
