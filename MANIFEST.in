@@ -1,4 +1,2 @@
 include *.txt
-recursive-include docs *.txt
 include *.markdown
-recursive-include docs *.markdown
