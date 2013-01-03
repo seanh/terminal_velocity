@@ -12,11 +12,11 @@ import notebook
 
 
 palette = [
-    ('placeholder', 'dark blue', 'default'),
-    ('notewidget unfocused', 'default', 'default', '', '', ''),
-    ('notewidget focused', 'black', 'brown', '', '', ''),
-    ('search', 'default', 'default', '', '', ''),
-    ('autocomplete', 'black', 'brown', '', '', ''),
+    ("placeholder", "dark blue", "default"),
+    ("notewidget unfocused", "default", "default"),
+    ("notewidget focused", "black", "brown"),
+    ("search", "default", "default"),
+    ("autocomplete", "black", "brown"),
     ]
 
 
