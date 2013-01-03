@@ -42,7 +42,7 @@ the default default will be used"""
             parents=[parser],
             formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("-e", "--editor", dest="editor", action="store",
-        default=defaults.get("editor", "$EDITOR"),
+        default=defaults.get("editor", os.getenv("EDITOR", "vim")),
         help="the text editor to use (default: %(default)s)")
     parser.add_argument("-x", "--extension", dest="extension", action="store",
         default=defaults.get("extension", "txt"),
