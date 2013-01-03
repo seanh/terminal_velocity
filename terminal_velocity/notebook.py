@@ -183,12 +183,12 @@ class PlainTextNote(object):
         # subdirs) if they don't exist.
         directory = os.path.split(self.abspath)[0]
         if not os.path.isdir(directory):
-            logger.debug("'{} doesn't exist, creating it".format(directory))
+            logger.debug(u"'{} doesn't exist, creating it".format(directory))
             try:
                 os.makedirs(directory)
             except os.error, e:
                 raise NewNoteError(
-                        "{0} could not be created: {1}".format(directory, e))
+                        u"{0} could not be created: {1}".format(directory, e))
 
         # Create an empty file if the file doesn't exist.
         open(self.abspath, 'a')
@@ -301,12 +301,12 @@ class PlainTextNoteBook(object):
 
         # Create notebook_dir if it doesn't exist.
         if not os.path.isdir(self.path):
-            logger.debug("'{} doesn't exist, creating it".format(self.path))
+            logger.debug(u"'{} doesn't exist, creating it".format(self.path))
             try:
                 os.makedirs(self.path)
             except os.error, e:
                 raise NewNoteBookError(
-                        "{0} could not be created: {1}".format(self.path, e))
+                        u"{0} could not be created: {1}".format(self.path, e))
         else:
             # TODO: Check that self.path is a directory, if not raise.
             pass

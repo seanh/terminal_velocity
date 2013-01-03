@@ -108,9 +108,9 @@ class AutocompleteWidget(urwid.Edit):
 
         # When search bar is empty show placeholder text.
         if not self.edit_text and not self.autocomplete_text:
-            placeholder_text = "Find or Create"
+            placeholder_text = u"Find or Create"
             return (placeholder_text,
-                    [('placeholder', len(placeholder_text))])
+                    [("placeholder", len(placeholder_text))])
 
         # When no note is focused simply show typed text in search bar.
         if not self.autocomplete_text:
@@ -125,8 +125,8 @@ class AutocompleteWidget(urwid.Edit):
             # note's title in a different colour.
             text_to_show = self.edit_text + self.autocomplete_text[
                     len(self.edit_text):]
-            attrs = [('search', len(self.edit_text)),
-                    ('autocomplete', len(text_to_show) - len(self.edit_text))]
+            attrs = [("search", len(self.edit_text)),
+                    ("autocomplete", len(text_to_show) - len(self.edit_text))]
             return (text_to_show, attrs)
         else:
             # If the typed text is not a prefix of the focused note's title,
@@ -180,8 +180,8 @@ class NoteFilterListBox(urwid.ListBox):
 
     def render(self, size, focus=False):
         if len(self.list_walker) == 0:
-            placeholder = placeholder_text("No matching notes, press Enter to "
-                    "create a new note")
+            placeholder = placeholder_text(u"No matching notes, press Enter "
+                "to create a new note")
             return placeholder.render(size)
         return super(NoteFilterListBox, self).render(size, self.fake_focus)
 
@@ -388,8 +388,8 @@ class MainFrame(urwid.Frame):
         # If the user has no notes yet show some placeholder text, otherwise
         # show the note list.
         if len(self.notebook) == 0:
-            self.body = placeholder_text("You have no notes yet, to create a "
-                    "note type a note title then press Enter")
+            self.body = placeholder_text(u"You have no notes yet, to create "
+                "a note type a note title then press Enter")
         else:
             self.body = urwid.Padding(self.list_box, left=1, right=1)
 
