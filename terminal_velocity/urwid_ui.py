@@ -20,11 +20,18 @@ palette = [
     ]
 
 
-def system(cmd, loop):
+def system(cmd, args, loop):
     """Execute a system command in a subshell and return the exit status."""
 
     loop.screen.stop()
-    p = subprocess.Popen(cmd, shell=True)
+
+    safe_args = [cmd]
+    for arg in args:
+        safe_arg = u"'{0}'".format(arg)
+        safe_arg = arg.encode("utf-8")  # FIXME: Correct encoding?
+        safe_args.append(safe_arg)
+
+    p = subprocess.Popen(safe_args)
     status = os.waitpid(p.pid, 0)[1]
     loop.screen.start()
     return status
@@ -309,18 +316,15 @@ class MainFrame(urwid.Frame):
 
         elif key in ["enter"]:
             if self.selected_note:
-                system('{0} "{1}"'.format(self.editor,
-                    self.selected_note.abspath), self.loop)
+                system(self.editor, [self.selected_note.abspath], self.loop)
             else:
                 if self.search_box.text:
                     try:
                         note = self.notebook.add_new(self.search_box.text)
-                        system('{0} "{1}"'.format(self.editor, note.abspath),
-                                self.loop)
+                        system(self.editor, [note.abspath], self.loop)
                     except notebook.NoteAlreadyExistsError:
                         # Try to open the existing note instead.
-                        system('{0} "{1}"'.format(self.editor,
-                            self.search_box.text), self.loop)
+                        system(self.editor, [self.search_box.text], self.loop)
                 else:
                     # Hitting Enter with no note selected and no text typed in
                     # search box does nothing.

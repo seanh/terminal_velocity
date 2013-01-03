@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="terminal_velocity",
-    version="0.1a2",
+    version="0.1a3",
     author="Sean Hammond",
     packages=["terminal_velocity"],
     scripts=["bin/terminal_velocity"],
@@ -11,5 +11,6 @@ setup(
     description="A fast note-taking app for the UNIX terminal",
     install_requires=[
         "urwid==1.1.1",
+        "chardet==2.1.1",
         ]
 )
