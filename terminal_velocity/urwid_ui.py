@@ -324,7 +324,9 @@ class MainFrame(urwid.Frame):
                         system(self.editor, [note.abspath], self.loop)
                     except notebook.NoteAlreadyExistsError:
                         # Try to open the existing note instead.
-                        system(self.editor, [self.search_box.text], self.loop)
+                        system(self.editor,
+                            [self.search_box.text + self.notebook.extension],
+                            self.loop)
                 else:
                     # Hitting Enter with no note selected and no text typed in
                     # search box does nothing.
