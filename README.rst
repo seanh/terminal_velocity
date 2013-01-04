@@ -1,7 +1,7 @@
 Terminal Velocity
 =================
 
-For a description of the app and its features, see the
+For install instructions, usage and features, see the
 `Terminal Velocity website <http://seanh.github.com/terminal_velocity>`_.
 
 Hacking
