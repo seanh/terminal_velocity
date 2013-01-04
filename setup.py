@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="terminal_velocity",
-    version="0.1a5",
+    version="0.1a6",
     author="Sean Hammond",
     packages=["terminal_velocity"],
     scripts=["bin/terminal_velocity"],

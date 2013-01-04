@@ -1,2 +1,2 @@
-include *.txt
 include *.markdown
+include *.rst
