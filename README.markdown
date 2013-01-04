@@ -56,3 +56,9 @@ Velocity by activating and deactivating your virtualenv with the `workon` and
 virtualenv activated and others not, so you can use your stable copy of
 Terminal Velocity to takes note while you hack on your development version.
 
+You can also setup different aliases (e.g. in your `~/.bashrc` or `~/.zshrc`)
+for running the release and development versions:
+
+    alias tv="/usr/local/bin/terminal_velocity"
+    alias tvdev="/home/seanh/.virtualenvs/terminal_velocity/bin/python /home/seanh/Projects/terminal_velocity/bin/terminal_velocity"
+
