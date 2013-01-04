@@ -1,3 +1,4 @@
+v0.1a5, 5th January 2013 -- Add README to pypi page (long_description).
 v0.1a4, 4th January 2013 -- Change README from markdown to rest.
 v0.1a3, 4th January 2013 -- Unicode handling fixes.
 v0.1a2, 2nd January 2013 -- Fix a pip install warning.
