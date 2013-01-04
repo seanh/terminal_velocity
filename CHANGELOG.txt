@@ -1,3 +1,4 @@
+v0.1a4, 4th January 2013 -- Change README from markdown to rest.
 v0.1a3, 4th January 2013 -- Unicode handling fixes.
 v0.1a2, 2nd January 2013 -- Fix a pip install warning.
 v0.1a1, 1st January 2013 -- Initial release.
