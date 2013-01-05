@@ -31,7 +31,7 @@ def system(cmd, args, loop):
         safe_arg = arg.encode("utf-8")  # FIXME: Correct encoding?
         safe_args.append(safe_arg)
 
-    returncode = subprocess.call(safe_args)
+    returncode = subprocess.check_call(safe_args)
     loop.screen.start()
     return returncode
 
