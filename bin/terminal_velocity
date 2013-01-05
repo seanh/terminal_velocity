@@ -81,8 +81,11 @@ the default default will be used"""
     sh.setLevel(logging.CRITICAL)
     logger.addHandler(sh)
 
-    urwid_ui.launch(notes_dir=args.notes_dir, editor=args.editor,
-            extension=args.extension)
+    try:
+        urwid_ui.launch(notes_dir=args.notes_dir, editor=args.editor,
+                extension=args.extension)
+    except KeyboardInterrupt:
+        sys.exit()
 
 if __name__ == "__main__":
     main()
