@@ -77,13 +77,14 @@ the default default will be used"""
 
     args = parser.parse_args()
 
-    if args.print_config:
-        print args
-        sys.exit()
-
     extensions = []
     for extension in args.extensions.split(","):
         extensions.append(extension.strip())
+    args.extensions = extensions
+
+    if args.print_config:
+        print args
+        sys.exit()
 
     logger = logging.getLogger("terminal_velocity")
     # Send all messages to handlers, let them decide.
@@ -103,7 +104,7 @@ the default default will be used"""
 
     try:
         urwid_ui.launch(notes_dir=args.notes_dir, editor=args.editor,
-                extension=args.extension, extensions=extensions)
+                extension=args.extension, extensions=args.extensions)
     except KeyboardInterrupt:
         sys.exit()
 
