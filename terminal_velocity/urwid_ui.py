@@ -34,7 +34,12 @@ def system(cmd, args, loop):
 
     logger.debug("System command: {0}".format(safe_args))
 
-    returncode = subprocess.check_call(safe_args)
+    try:
+        returncode = subprocess.check_call(safe_args)
+    except Exception as e:
+        logger.exception(e)
+        raise e
+
     loop.screen.start()
     return returncode
 
