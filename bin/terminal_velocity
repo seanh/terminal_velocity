@@ -102,6 +102,8 @@ the default default will be used"""
     sh.setLevel(logging.CRITICAL)
     logger.addHandler(sh)
 
+    logger.debug(args)
+
     try:
         urwid_ui.launch(notes_dir=args.notes_dir, editor=args.editor,
                 extension=args.extension, extensions=args.extensions)

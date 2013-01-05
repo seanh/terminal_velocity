@@ -85,6 +85,8 @@ def unicode_or_bust(raw_text):
     if encoding and encoding not in encodings:
         try:
             decoded = unicode(raw_text, encoding=encoding)
+            logger.debug("File decoded with chardet, encoding was {0}".format(
+                encoding))
             return decoded
         except UnicodeDecodeError:
             pass
@@ -94,6 +96,7 @@ def unicode_or_bust(raw_text):
     # I've heard that decoding with cp1252 never fails, so try that last.
     try:
         decoded = unicode(raw_text, encoding="cp1252")
+        logger.debug("File decoded with encoding cp1252")
         return decoded
     except UnicodeDecodeError:
         pass
@@ -172,7 +175,6 @@ class PlainTextNote(object):
             a dot e.g. ".txt")
 
         """
-        logger.debug(u"Initialising new PlainTextNote: '{}'.".format(title))
         self._title = title
         self._notebook = notebook
         self._extension = extension

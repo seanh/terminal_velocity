@@ -4,6 +4,8 @@ Implemented using the console user interface library urwid.
 
 """
 import subprocess
+import logging
+logger = logging.getLogger(__name__)
 
 import urwid
 
@@ -29,6 +31,8 @@ def system(cmd, args, loop):
         safe_arg = u"'{0}'".format(arg)
         safe_arg = arg.encode("utf-8")  # FIXME: Correct encoding?
         safe_args.append(safe_arg)
+
+    logger.debug("System command: {0}".format(safe_args))
 
     returncode = subprocess.check_call(safe_args)
     loop.screen.start()
