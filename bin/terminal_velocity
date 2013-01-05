@@ -50,7 +50,7 @@ the default default will be used"""
     parser.add_argument("-d", "--debug", dest="debug", action="store_true",
         default=defaults.get("debug", False),
         help="debug logging on or off (default: off)")
-    parser.add_argument("-l", "--log_file", dest="log_file", action="store",
+    parser.add_argument("-l", "--log-file", dest="log_file", action="store",
         default=defaults.get("log_file", "~/.tvlog"),
         help="the file to log to (default: %(default)s)")
     parser.add_argument("-p", "--print-config", dest="print_config",
