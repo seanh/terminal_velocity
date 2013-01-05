@@ -55,7 +55,7 @@ the default default will be used"""
         help="the file to log to (default: %(default)s)")
     parser.add_argument("-p", "--print-config", dest="print_config",
             action="store_true", default=False,
-            help="print config variables then exit")
+            help="print your configuration settings then exit")
     parser.add_argument("notes_dir", action="store", nargs="?",
         default=defaults.get("notes_dir", "~/Notes"),
         help="the notes directory to use (default: %(default)s)")
