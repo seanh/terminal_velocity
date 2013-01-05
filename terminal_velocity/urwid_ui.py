@@ -3,7 +3,6 @@
 Implemented using the console user interface library urwid.
 
 """
-import os
 import subprocess
 
 import urwid
