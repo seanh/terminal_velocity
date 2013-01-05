@@ -53,10 +53,17 @@ the default default will be used"""
     parser.add_argument("-l", "--log_file", dest="log_file", action="store",
         default=defaults.get("log_file", "~/.tvlog"),
         help="the file to log to (default: %(default)s)")
+    parser.add_argument("-p", "--print-config", dest="print_config",
+            action="store_true", default=False,
+            help="print config variables then exit")
     parser.add_argument("notes_dir", action="store", nargs="?",
         default=defaults.get("notes_dir", "~/Notes"),
         help="the notes directory to use (default: %(default)s)")
     args = parser.parse_args()
+
+    if args.print_config:
+        print args
+        sys.exit()
 
     logger = logging.getLogger("terminal_velocity")
     # Send all messages to handlers, let them decide.
