@@ -31,10 +31,9 @@ def system(cmd, args, loop):
         safe_arg = arg.encode("utf-8")  # FIXME: Correct encoding?
         safe_args.append(safe_arg)
 
-    p = subprocess.Popen(safe_args)
-    status = os.waitpid(p.pid, 0)[1]
+    returncode = subprocess.call(safe_args)
     loop.screen.start()
-    return status
+    return returncode
 
 
 def placeholder_text(text):
