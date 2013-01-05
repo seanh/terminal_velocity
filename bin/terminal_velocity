@@ -31,39 +31,59 @@ def main():
 the config file can be used to override the defaults for the optional
 arguments, example config file contents:
 
-  [DEFAULT]
-  editor = vim
-  extension = txt
-  notes_dir = ~/Notes
+    [DEFAULT]
+    editor = vim
+    # The filename extension to use for new files.
+    extension = .txt
+    # The filename extensions to recognize in the notes dir.
+    extensions = .txt, .text, .md, .markdown, .mdown, .mdwn, .mkdn, .mkd, .rst
+    notes_dir = ~/Notes
 
 if there is no config file (or an argument is missing from the config file)
 the default default will be used"""
+
     parser = argparse.ArgumentParser(description=description, epilog=epilog,
             parents=[parser],
             formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("-e", "--editor", dest="editor", action="store",
         default=defaults.get("editor", os.getenv("EDITOR", "vim")),
         help="the text editor to use (default: %(default)s)")
+
     parser.add_argument("-x", "--extension", dest="extension", action="store",
         default=defaults.get("extension", "txt"),
         help="the filename extension for new notes (default: %(default)s)")
+
+    parser.add_argument("--extensions", dest="extensions", action="store",
+        nargs='+', default=defaults.get("extensions",
+            ".txt, .text, .md, .markdown, .mdown, .mdwn, .mkdn, .mkd, .rst"),
+        help="the filename extensions to recognize in the notes dir, a "
+            "comma-separated list (default: %(default)s)")
+
     parser.add_argument("-d", "--debug", dest="debug", action="store_true",
         default=defaults.get("debug", False),
         help="debug logging on or off (default: off)")
+
     parser.add_argument("-l", "--log-file", dest="log_file", action="store",
         default=defaults.get("log_file", "~/.tvlog"),
         help="the file to log to (default: %(default)s)")
+
     parser.add_argument("-p", "--print-config", dest="print_config",
             action="store_true", default=False,
             help="print your configuration settings then exit")
+
     parser.add_argument("notes_dir", action="store", nargs="?",
         default=defaults.get("notes_dir", "~/Notes"),
         help="the notes directory to use (default: %(default)s)")
+
     args = parser.parse_args()
 
     if args.print_config:
         print args
         sys.exit()
+
+    extensions = []
+    for extension in args.extensions.split(","):
+        extensions.append(extension.strip())
 
     logger = logging.getLogger("terminal_velocity")
     # Send all messages to handlers, let them decide.
@@ -83,7 +103,7 @@ the default default will be used"""
 
     try:
         urwid_ui.launch(notes_dir=args.notes_dir, editor=args.editor,
-                extension=args.extension)
+                extension=args.extension, extensions=extensions)
     except KeyboardInterrupt:
         sys.exit()
 

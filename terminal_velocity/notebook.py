@@ -270,7 +270,8 @@ def brute_force_search(notebook, query):
 class PlainTextNoteBook(object):
     """A NoteBook that stores its notes as a directory of plain text files."""
 
-    def __init__(self, path, extension, search_function=brute_force_search):
+    def __init__(self, path, extension, extensions,
+            search_function=brute_force_search):
         """Make a new PlainTextNoteBook for the given path.
 
         If `path` does not exist it will be created (parent directories too).
@@ -288,6 +289,9 @@ class PlainTextNoteBook(object):
 
         extension -- the filename extension to use for new notes (string)
 
+        extensions -- the filename extensions to read in the notes dir
+            (list of strings)
+
         search_function -- the function to call to search the notebook
 
         """
@@ -298,6 +302,12 @@ class PlainTextNoteBook(object):
             extension = "." + extension
         self.extension = extension
         self.search_function = search_function
+
+        self.extensions = []
+        for extension in extensions:
+            if not extension.startswith("."):
+                extension = "." + extension
+            self.extensions.append(extension)
 
         # Create notebook_dir if it doesn't exist.
         if not os.path.isdir(self.path):
@@ -320,8 +330,7 @@ class PlainTextNoteBook(object):
                 if filename.startswith('.') or filename.endswith('~'):
                     continue
 
-                # Skip some file types.
-                if os.path.splitext(filename)[1] in [".swp", ".pickle"]:
+                if os.path.splitext(filename)[1] not in self.extensions:
                     continue
 
                 # Make a Note object for the file and add it to this NoteBook.
