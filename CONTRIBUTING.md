@@ -1,6 +1,6 @@
 If you want to contribute bug reports or feature requests, documentation, or
 code to Terminal Velocity, you can send them to me by email or by whatever means
-you prefer. But if you're looking for instructions, here are my suggesions:
+you prefer. But if you're looking for instructions, here are my suggestions:
 
 If you want to contribute a bug report or feature request to Terminal Velocity,
 use
@@ -36,7 +36,7 @@ my master branch. In detail:
    Instead, create a new feature or bugfix branch for each feature or bugfix
    you develop. Develop each feature or bugfix on its own branch.
 
-5. Commit your code on the new branch, and push it to your fork on github:
+5. Commit your code on the new branch, and push it to your fork on GitHub:
    `git push origin my-new-feature`.
 
 6. Use the _Pull Request_ button on the main Terminal Velocity project page to
