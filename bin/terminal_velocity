@@ -109,6 +109,7 @@ the default default will be used"""
         urwid_ui.launch(notes_dir=args.notes_dir, editor=args.editor,
                 extension=args.extension, extensions=args.extensions)
     except KeyboardInterrupt:
+        # Silence KeyboardInterrupt tracebacks on ctrl-c.
         sys.exit()
 
 if __name__ == "__main__":
