@@ -326,14 +326,15 @@ class MainFrame(urwid.Frame):
             if self.selected_note:
                 system(self.editor, [self.selected_note.abspath], self.loop)
             else:
-                if self.search_box.text:
+                if self.search_box.edit_text:
                     try:
-                        note = self.notebook.add_new(self.search_box.text)
+                        note = self.notebook.add_new(self.search_box.edit_text)
                         system(self.editor, [note.abspath], self.loop)
                     except notebook.NoteAlreadyExistsError:
                         # Try to open the existing note instead.
                         system(self.editor,
-                            [self.search_box.text + self.notebook.extension],
+                            [self.search_box.edit_text +
+                                self.notebook.extension],
                             self.loop)
                     except notebook.InvalidNoteTitleError:
                         # TODO: Display error message to user.
