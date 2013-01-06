@@ -433,6 +433,7 @@ class MainFrame(urwid.Frame):
 
 def launch(notes_dir, editor, extension, extensions):
     """Launch the user interface."""
+
     frame = MainFrame(notes_dir, editor, extension, extensions)
     loop = urwid.MainLoop(frame, palette)
     frame.loop = loop
