@@ -2,6 +2,13 @@ Terminal Velocity
 =================
 
 
+`Terminal Velocity` is a fast note-taking app for the UNIX terminal, that
+focuses on letting you create or find a note as quickly and easily as possible,
+then uses your ``$EDITOR`` to open and edit the note. It is heavily inspired
+by the OS X app `Notational Velocity <http://notational.net/>`_.
+For screenshots and features, see the
+`Terminal Velocity website <http://seanh.github.com/terminal_velocity>`_.
+
 To install Terminal Velocity, run::
 
     pip install terminal_velocity
@@ -27,7 +34,4 @@ To upgrade Terminal Velocity to the latest version, run::
 To uninstall it, run::
 
     pip uninstall terminal_velocity
-
-For screenshots and features, see the
-`Terminal Velocity website <http://seanh.github.com/terminal_velocity>`_.
 
