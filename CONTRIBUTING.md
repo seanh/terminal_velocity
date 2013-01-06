@@ -17,47 +17,37 @@ commit your code to it, push your branch to your Terminal Velocity fork on
 GitHub, then send me a pull request asking me to pull your feature branch into
 my master branch. In detail:
 
-1. [Create a GitHub account](https://github.com/signup) (it's free!)
+1. Install the Terminal Velocity development version (see instructions below).
 
-2. Fork my Terminal Velocity repo: click the _Fork_ button on the Terminal
+2. Checkout a new branch, forked from the master branch, e.g.
+   `git checkout -b my-new-feature`. _Don't commit on the master branch_,
+   instead develop each bugfix or feature on its own branch forked from master.
+
+3. [Create a GitHub account](https://github.com/signup) (it's free!)
+
+4. Fork my Terminal Velocity repo: click the _Fork_ button on the Terminal
    Velocity GitHub page.
 
-3. `git clone` your Terminal Velocity fork to your development machine.
+5. In the git clone on your dev machine, add your GitHub fork as a remote (you
+   only need to this once):
 
-4. Checkout a new branch forked from the master branch
-   (e.g. `git checkout -b my-new-feature`).
+        git remote add MY_FORK https://github.com/YOUR_USERNAME/terminal_velocity.git
 
-   Note about branches: It's best if you keep the master branch of your fork,
-   and any other branches corresponding to branches from the main Terminal
-   Velocity repo, as pristine copies of their corresponding branches. In other
-   words, _never commit to the master branch_, only pull changes from the main
-   repo into the master branch.
+6. Push your feature or bugfix branch to your fork:
 
-   Instead, create a new feature or bugfix branch for each feature or bugfix
-   you develop. Develop each feature or bugfix on its own branch.
+        git push MY_FORK my-new-feature
 
-5. Commit your code on the new branch, and push it to your fork on GitHub:
-   `git push origin my-new-feature`.
-
-6. Use the _Pull Request_ button on the main Terminal Velocity project page to
+7. Use the _Pull Request_ button on the main Terminal Velocity project page to
    send me a pull request, asking me to pull your bugfix or feature branch into
    my master branch.
 
-7. Once I've pulled your pull request, then you can pull my master branch into
-   the master branch of your fork and get your new feature or bugfix in your
-   master branch.
-
-   First add the main Terminal Velocity repo as a remote (you only need to do
-   this once):
-
-        git remote add seanh https://github.com/seanh/terminal_velocity.git
-
-   Now pull the main master branch into your master branch, and push it to your
-   fork:
+8. Once I've pulled your pull request, then you can pull my master branch into
+   the master branch on your dev machine and push it to the master branch on
+   your GitHub fork, to get the new feature in those master branches as well:
 
         git checkout master
-        git pull seanh master
-        git push origin master
+        git pull origin master
+        git push MY_FORK master
 
 For code style, I try to follow [PEP 8](http://www.python.org/dev/peps/pep-0008/) and
 [PEP 257](http://www.python.org/dev/peps/pep-0257/). I try to make code compatible
@@ -66,4 +56,65 @@ with Python 2, version 2.6 or newer (i.e. don't use
 That being said, I also try to write Python 2 code that's
 [forward-compatible with Python 3](http://lucumr.pocoo.org/2011/1/22/forwards-compatible-python/).
 For git commit messages, I try to follow these [Commit Guidelines](http://git-scm.com/book/en/Distributed-Git-Contributing-to-a-Project#Commit-Guidelines).
+
+
+How To Install the Terminal Velocity Development Version
+--------------------------------------------------------
+
+To install Terminal Velocity for development, you need
+[Python](http://www.python.org/),
+[virtualenv](http://www.virtualenv.org/),
+[virtualenvwrapper](http://www.doughellmann.com/projects/virtualenvwrapper/)
+and [git](http://git-scm.com/)
+(technically you can make do without virtualenv and virtualenvwrapper, but they
+make development a lot more convenient).
+
+Use virtualenvwrapper to create a Python virtualenv and install Terminal
+Velocity and its dependences into the virtualenv, for example:
+
+    $ mkvirtualenv terminal_velocity
+    (terminal_velocity) $ mkdir -p ~/Projects/terminal_velocity
+    (terminal_velocity) $ cd ~/Projects/terminal_velocity
+    (terminal_velocity) $ setvirtualenvproject
+    (terminal_velocity) $ git clone https://github.com/seanh/terminal_velocity.git
+    (terminal_velocity) $ cd terminal_velocity
+    (terminal_velocity) $ python setup.py develop
+    (terminal_velocity) $ deactivate
+    $ workon terminal_velocity
+
+At this point, the `terminal_velocity` command should run your development
+copy of Terminal Velocity from your virtualenv:
+
+    (terminal_velocity) $ which terminal_velocity
+    /home/seanh/.virtualenvs/terminal_velocity/bin/terminal_velocity
+
+Each time you open a new shell to start working on Terminal Velocity
+development, you need to activate your terminal_velocity virtualenv:
+
+    $ workon terminal_velocity
+    (terminal_velocity) $
+
+When you're finished working, deactivate the virtualenv:
+
+    (terminal_velocity) $ deactivate
+    $
+
+While the virtualenv is deactivated, the `terminal_velocity` command will run
+your installed release version of Terminal Velocity (if you have one) rather
+than the development version installed in your virtualenv:
+
+    $ which terminal_velocity
+    /usr/local/bin/terminal_velocity
+
+So you can easily switch between your stable and development copies of Terminal
+Velocity by activating and deactivating your virtualenv with the `workon` and
+`deactivate` commands. You can also have multiple shells open, some with the
+virtualenv activated and others not, so you can use your stable copy of
+Terminal Velocity to takes note while you hack on your development version.
+
+You can also setup different aliases (e.g. in your `~/.bashrc` or
+`~/.zshrc`) for running the release and development versions:
+
+    alias tv="/usr/local/bin/terminal_velocity"
+    alias tvdev="/home/seanh/.virtualenvs/terminal_velocity/bin/python /home/seanh/Projects/terminal_velocity/bin/terminal_velocity"
 
