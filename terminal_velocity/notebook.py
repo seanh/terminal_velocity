@@ -139,6 +139,13 @@ class NoteAlreadyExistsError(NewNoteError):
     pass
 
 
+class InvalidNoteTitleError(NewNoteError):
+    """Exception raised when trying to add a new note with an invalid title.
+
+    """
+    pass
+
+
 class DelNoteError(Error):
     """Exception raised if removing a Note from a NoteBook fails.
 
@@ -386,6 +393,13 @@ class PlainTextNoteBook(object):
         # Don't create notes outside of the notes dir.
         if title.startswith(os.sep):
             title = title[len(os.sep):]
+
+        title = title.strip()
+
+        if not os.path.split(title)[1]:
+            # Don't create notes with empty filenames.
+            raise InvalidNoteTitleError(
+                    "Invalid note title: {0}".format(title))
 
         # Check that we don't already have a note with the same title and
         # extension.

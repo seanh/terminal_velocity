@@ -335,6 +335,9 @@ class MainFrame(urwid.Frame):
                         system(self.editor,
                             [self.search_box.text + self.notebook.extension],
                             self.loop)
+                    except notebook.InvalidNoteTitleError:
+                        # TODO: Display error message to user.
+                        pass
                 else:
                     # Hitting Enter with no note selected and no text typed in
                     # search box does nothing.
