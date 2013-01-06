@@ -1,2 +1,3 @@
 include *.markdown
+include *.md
 include *.rst
