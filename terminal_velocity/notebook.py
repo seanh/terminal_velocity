@@ -188,7 +188,7 @@ class PlainTextNote(object):
             logger.debug(u"'{0} doesn't exist, creating it".format(directory))
             try:
                 os.makedirs(directory)
-            except os.error, e:
+            except os.error as e:
                 raise NewNoteError(
                         u"{0} could not be created: {1}".format(directory, e))
 
@@ -316,7 +316,7 @@ class PlainTextNoteBook(object):
             logger.debug(u"'{0} doesn't exist, creating it".format(self.path))
             try:
                 os.makedirs(self.path)
-            except os.error, e:
+            except os.error as e:
                 raise NewNoteBookError(
                         u"{0} could not be created: {1}".format(self.path, e))
         else:
