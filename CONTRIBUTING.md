@@ -17,7 +17,7 @@ commit your code to it, push your branch to your Terminal Velocity fork on
 GitHub, then send me a pull request asking me to pull your feature branch into
 my master branch. In detail:
 
-1. Install the Terminal Velocity development version (see instructions below).
+1. [Install the Terminal Velocity development version](https://github.com/seanh/terminal_velocity/blob/master/CONTRIBUTING.md#how-to-install-the-terminal-velocity-development-version).
 
 2. Checkout a new branch, forked from the master branch, e.g.
    `git checkout -b my-new-feature`. _Don't commit on the master branch_,
