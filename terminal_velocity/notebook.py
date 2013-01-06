@@ -185,7 +185,7 @@ class PlainTextNote(object):
         # subdirs) if they don't exist.
         directory = os.path.split(self.abspath)[0]
         if not os.path.isdir(directory):
-            logger.debug(u"'{} doesn't exist, creating it".format(directory))
+            logger.debug(u"'{0} doesn't exist, creating it".format(directory))
             try:
                 os.makedirs(directory)
             except os.error, e:
@@ -313,7 +313,7 @@ class PlainTextNoteBook(object):
 
         # Create notebook_dir if it doesn't exist.
         if not os.path.isdir(self.path):
-            logger.debug(u"'{} doesn't exist, creating it".format(self.path))
+            logger.debug(u"'{0} doesn't exist, creating it".format(self.path))
             try:
                 os.makedirs(self.path)
             except os.error, e:
