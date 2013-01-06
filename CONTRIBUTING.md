@@ -1,3 +1,7 @@
+Contributing to Terminal Velocity
+---------------------------------
+
+
 If you want to contribute bug reports or feature requests, documentation, or
 code to Terminal Velocity, you can send them to me by email or by whatever means
 you prefer. But if you're looking for instructions, here are my suggestions:
@@ -58,8 +62,7 @@ That being said, I also try to write Python 2 code that's
 For git commit messages, I try to follow these [Commit Guidelines](http://git-scm.com/book/en/Distributed-Git-Contributing-to-a-Project#Commit-Guidelines).
 
 
-How To Install the Terminal Velocity Development Version
---------------------------------------------------------
+### How To Install the Terminal Velocity Development Version
 
 To install Terminal Velocity for development, you need
 [Python](http://www.python.org/),
