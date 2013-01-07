@@ -35,3 +35,10 @@ To uninstall it, run::
 
     pip uninstall terminal_velocity
 
+To make a bug report or feature request, use `GitHub Issues <https://github.com/seanh/terminal_velocity/issues>`_.
+
+To contribute documentation, use `the wiki <https://github.com/seanh/terminal_velocity/wiki>`_.
+
+To contribute code to Terminal Velocity, see
+`CONTRIBUTING <https://github.com/seanh/terminal_velocity/blob/master/CONTRIBUTING.md#contributing-to-terminal-velocity>`_.
+
