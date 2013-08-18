@@ -280,7 +280,7 @@ class PlainTextNoteBook(object):
     """A NoteBook that stores its notes as a directory of plain text files."""
 
     def __init__(self, path, extension, extensions,
-            search_function=brute_force_search):
+            search_function=brute_force_search, exclude=None):
         """Make a new PlainTextNoteBook for the given path.
 
         If `path` does not exist it will be created (parent directories too).
@@ -311,6 +311,8 @@ class PlainTextNoteBook(object):
             extension = "." + extension
         self.extension = extension
         self.search_function = search_function
+        self.exclude = exclude
+        if not self.exclude: self.exclude = []
 
         self.extensions = []
         for extension in extensions:
@@ -333,7 +335,17 @@ class PlainTextNoteBook(object):
         # Read any existing note files in the notes directory.
         self._notes = []
         for root, dirs, files in os.walk(self.path):
+
+            # ignore any dirs we don't want to check
+            for name in self.exclude:
+                if name in dirs:
+                    dirs.remove(name)
+
             for filename in files:
+
+                # ignore anything listed in our 'exclude' list
+                if filename in self.exclude:
+                    continue
 
                 # Ignore hidden and backup files.
                 if filename.startswith('.') or filename.endswith('~'):

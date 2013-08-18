@@ -60,6 +60,13 @@ the default default will be used"""
         help="the filename extensions to recognize in the notes dir, a "
             "comma-separated list (default: %(default)s)")
 
+    parser.add_argument("--exclude", dest="exclude", action="store",
+        nargs='+', default=defaults.get("exclude",
+            "src, backup, ignore, tmp, old"),
+        help="the file/directory names to skip while recursively searching "
+            "the notes dir for notes, a comma-separated list "
+            "(default: %(default)s)")
+
     parser.add_argument("-d", "--debug", dest="debug", action="store_true",
         default=defaults.get("debug", False),
         help="debug logging on or off (default: off)")
@@ -82,6 +89,11 @@ the default default will be used"""
     for extension in args.extensions.split(","):
         extensions.append(extension.strip())
     args.extensions = extensions
+
+    exclude = []
+    for name in args.exclude.split(","):
+        exclude.append(name.strip())
+    args.exclude = exclude
 
     if args.print_config:
         print args
@@ -107,7 +119,8 @@ the default default will be used"""
 
     try:
         urwid_ui.launch(notes_dir=args.notes_dir, editor=args.editor,
-                extension=args.extension, extensions=args.extensions)
+                extension=args.extension, extensions=args.extensions,
+                exclude=args.exclude)
     except KeyboardInterrupt:
         # Silence KeyboardInterrupt tracebacks on ctrl-c.
         sys.exit()
