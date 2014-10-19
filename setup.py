@@ -13,5 +13,8 @@ setup(
     install_requires=[
         "urwid==1.1.1",
         "chardet==2.1.1",
-        ]
+        ],
+    classifiers=[
+        'Programming Language :: Python :: 2.7',
+        ],
 )
