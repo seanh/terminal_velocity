@@ -7,6 +7,7 @@ import os
 import logging
 import logging.handlers
 import sys
+import json
 
 import terminal_velocity.urwid_ui as urwid_ui
 
@@ -60,6 +61,11 @@ the default default will be used"""
         help="the filename extensions to recognize in the notes dir, a "
             "comma-separated list (default: %(default)s)")
 
+    parser.add_argument("--hooks", dest="hooks", action="store",
+        default=defaults.get("hooks", "{}"),
+        help="the scripts which get executed when events occure such has \
+        saving notes (default: %(default)s)")
+
     parser.add_argument("-d", "--debug", dest="debug", action="store_true",
         default=defaults.get("debug", False),
         help="debug logging on or off (default: off)")
@@ -77,6 +83,9 @@ the default default will be used"""
         help="the notes directory to use (default: %(default)s)")
 
     args = parser.parse_args()
+
+
+    args.hooks = json.loads(args.hooks)
 
     extensions = []
     for extension in args.extensions.split(","):
@@ -107,7 +116,8 @@ the default default will be used"""
 
     try:
         urwid_ui.launch(notes_dir=args.notes_dir, editor=args.editor,
-                extension=args.extension, extensions=args.extensions)
+                extension=args.extension, extensions=args.extensions,
+                hooks=args.hooks)
     except KeyboardInterrupt:
         # Silence KeyboardInterrupt tracebacks on ctrl-c.
         sys.exit()

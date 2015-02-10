@@ -5,6 +5,7 @@ Implemented using the console user interface library urwid.
 """
 import subprocess
 import logging
+import os
 logger = logging.getLogger(__name__)
 
 import urwid
@@ -238,8 +239,7 @@ class NoteFilterListBox(urwid.ListBox):
 class MainFrame(urwid.Frame):
     """The topmost urwid widget."""
 
-    def __init__(self, notes_dir, editor, extension, extensions):
-
+    def __init__(self, notes_dir, editor, extension, extensions, hooks):
         self.editor = editor
         self.notebook = notebook.PlainTextNoteBook(notes_dir, extension,
                 extensions)
@@ -252,6 +252,8 @@ class MainFrame(urwid.Frame):
         self.suppress_focus = False
 
         self._selected_note = None
+
+        self.hooks = hooks
 
         self.search_box = AutocompleteWidget(wrap="clip")
         self.list_box = NoteFilterListBox(on_changed=self.on_list_box_changed)
@@ -306,6 +308,15 @@ class MainFrame(urwid.Frame):
 
         raise urwid.ExitMainLoop()
 
+    def execute_hook(self, hook, param):
+        """Execute the defined hook
+
+        For the time being only the post hook has been tested
+
+        """
+        if hook in self.hooks != "" and os.path.isfile(self.hooks[hook]):
+           subprocess.call([self.hooks[hook], param])
+
     def keypress(self, size, key):
 
         maxcol, maxrow = size
@@ -325,17 +336,20 @@ class MainFrame(urwid.Frame):
         elif key in ["enter"]:
             if self.selected_note:
                 system(self.editor, [self.selected_note.abspath], self.loop)
+                self.execute_hook("post", self.selected_note.abspath)
             else:
                 if self.search_box.edit_text:
                     try:
                         note = self.notebook.add_new(self.search_box.edit_text)
                         system(self.editor, [note.abspath], self.loop)
+                        self.execute_hook("post", note.abspath)
                     except notebook.NoteAlreadyExistsError:
                         # Try to open the existing note instead.
-                        system(self.editor,
-                            [self.search_box.edit_text +
+                        system(self.editor, [self.search_box.edit_text +
                                 self.notebook.extension],
                             self.loop)
+                        self.execute_hook("post", self.search_box.edit_text +
+                                self.notebook.extension)
                     except notebook.InvalidNoteTitleError:
                         # TODO: Display error message to user.
                         pass
@@ -435,10 +449,10 @@ class MainFrame(urwid.Frame):
         self.selected_note = note
 
 
-def launch(notes_dir, editor, extension, extensions):
+def launch(notes_dir, editor, extension, extensions, hooks):
     """Launch the user interface."""
 
-    frame = MainFrame(notes_dir, editor, extension, extensions)
+    frame = MainFrame(notes_dir, editor, extension, extensions, hooks)
     loop = urwid.MainLoop(frame, palette)
     frame.loop = loop
     loop.run()
