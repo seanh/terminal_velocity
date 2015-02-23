@@ -310,12 +310,14 @@ class MainFrame(urwid.Frame):
 
     def execute_hook(self, hook, param):
         """Execute the defined hook
-
         For the time being only the post hook has been tested
-
         """
-        if hook in self.hooks != "" and os.path.isfile(self.hooks[hook]):
-           subprocess.call([self.hooks[hook], param])
+        if hook in self.hooks and os.path.isfile(self.hooks[hook]):
+            try:
+                subprocess.call([self.hooks[hook], param])
+            except:
+                print "Couldn't execute " + hook + " script"
+                raw_input()
 
     def keypress(self, size, key):
 
