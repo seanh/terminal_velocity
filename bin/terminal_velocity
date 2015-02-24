@@ -55,13 +55,13 @@ the default default will be used"""
         help="the filename extension for new notes (default: %(default)s)")
 
     parser.add_argument("--extensions", dest="extensions", action="store",
-        nargs='+', default=defaults.get("extensions",
+        default=defaults.get("extensions",
             ".txt, .text, .md, .markdown, .mdown, .mdwn, .mkdn, .mkd, .rst"),
         help="the filename extensions to recognize in the notes dir, a "
             "comma-separated list (default: %(default)s)")
 
     parser.add_argument("--exclude", dest="exclude", action="store",
-        nargs='+', default=defaults.get("exclude",
+        default=defaults.get("exclude",
             "src, backup, ignore, tmp, old"),
         help="the file/directory names to skip while recursively searching "
             "the notes dir for notes, a comma-separated list "
