@@ -4,6 +4,7 @@ Implemented using the console user interface library urwid.
 
 """
 import subprocess
+import shlex
 import logging
 logger = logging.getLogger(__name__)
 
@@ -25,12 +26,10 @@ def system(cmd, args, loop):
     """Execute a system command in a subshell and return the exit status."""
 
     loop.screen.stop()
-
-    safe_args = [cmd]
-    for arg in args:
-        safe_arg = u"'{0}'".format(arg)
-        safe_arg = arg.encode("utf-8")  # FIXME: Correct encoding?
-        safe_args.append(safe_arg)
+    
+    cmd = u"{0}".format(cmd + args)
+    cmd = cmd.encode("utf-8")  # FIXME: Correct encoding?
+    safe_args = shlex.split(cmd)
 
     logger.debug("System command: {0}".format(safe_args))
 
