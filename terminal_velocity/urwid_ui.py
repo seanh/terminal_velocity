@@ -4,6 +4,7 @@ Implemented using the console user interface library urwid.
 
 """
 import subprocess
+import shlex
 import logging
 logger = logging.getLogger(__name__)
 
@@ -21,21 +22,19 @@ palette = [
     ]
 
 
-def system(cmd, args, loop):
+def system(cmd, loop):
     """Execute a system command in a subshell and return the exit status."""
 
     loop.screen.stop()
 
-    safe_args = [cmd]
-    for arg in args:
-        safe_arg = u"'{0}'".format(arg)
-        safe_arg = arg.encode("utf-8")  # FIXME: Correct encoding?
-        safe_args.append(safe_arg)
+    cmd = u"{0}".format(cmd)
+    cmd = cmd.encode("utf-8")  # FIXME: Correct encoding?
+    safe_cmd = shlex.split(cmd)
 
-    logger.debug("System command: {0}".format(safe_args))
+    logger.debug("System command: {0}".format(safe_cmd))
 
     try:
-        returncode = subprocess.check_call(safe_args)
+        returncode = subprocess.check_call(safe_cmd)
     except Exception as e:
         logger.exception(e)
         raise e
@@ -324,17 +323,16 @@ class MainFrame(urwid.Frame):
 
         elif key in ["enter"]:
             if self.selected_note:
-                system(self.editor, [self.selected_note.abspath], self.loop)
+                system(self.editor + ' ' + self.selected_note.abspath, self.loop)
             else:
                 if self.search_box.edit_text:
                     try:
                         note = self.notebook.add_new(self.search_box.edit_text)
-                        system(self.editor, [note.abspath], self.loop)
+                        system(self.editor + ' ' + note.abspath, self.loop)
                     except notebook.NoteAlreadyExistsError:
                         # Try to open the existing note instead.
-                        system(self.editor,
-                            [self.search_box.edit_text +
-                                self.notebook.extension],
+                        system(self.editor + ' ' + self.search_box.edit_text +
+                                self.notebook.extension,
                             self.loop)
                     except notebook.InvalidNoteTitleError:
                         # TODO: Display error message to user.
@@ -442,3 +440,4 @@ def launch(notes_dir, editor, extension, extensions, exclude=None):
     loop = urwid.MainLoop(frame, palette)
     frame.loop = loop
     loop.run()
+
