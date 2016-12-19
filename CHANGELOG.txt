@@ -1,3 +1,8 @@
+0.1.9, 19th December 2016
+    - Fix bug opening filenames with spaces in them (contributed by Vincent Perricone)
+    - Improved -e argument handling (contributed by Sam Walker)
+0.1.8, 19th October 2014
+    - Add --exclude option (contributed by Selene Scriven and Abhinav Gupta)
 0.1a7, 6th January 2013
     -   Add --print-config option
     -   Change --log_file option to --log-file.
