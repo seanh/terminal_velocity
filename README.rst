@@ -1,9 +1,6 @@
-**Terminal Velocity is looking for a new maintainer**
+**This is my unmaintained archived copy of Terminal Velocity**.
 
-I don't use Terminal Velocity anymore and don't have time to work on it.
-If you'd like to take it on: fork it, start pushing your changes to your own fork,
-get in touch with me and I'll add a link from my copy to your fork and
-make you an owner of the Terminal Velocity package on PyPI.
+Development has moved to Vincent Perricone's fork, you should use this instead: https://github.com/vhp/terminal_velocity
 
 Terminal Velocity
 =================
