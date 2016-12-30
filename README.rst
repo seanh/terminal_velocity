@@ -49,3 +49,18 @@ To contribute documentation, use `the wiki <https://github.com/seanh/terminal_ve
 To contribute code to Terminal Velocity, see
 `CONTRIBUTING <https://github.com/seanh/terminal_velocity/blob/master/CONTRIBUTING.md#contributing-to-terminal-velocity>`_.
 
+
+Hacking
+-------
+
+To release a new version of Terminal Velocity:
+
+1. Increment the version number in the
+   `setup.py file <setup.py>`_,
+   add an entry te the `changelog <CHANGELOG.txt>`_,
+   commit both changes to git and push them to github.
+   For example, see `aae87b <https://github.com/seanh/terminal_velocity/commit/aae87bcc50f88037b8fc76c78c0da2086c5e89ae>`_.
+
+2. Upload the new release to `the terminal_velocity package on pypi <https://pypi.python.org/pypi/terminal_velocity>`_: run ``python setup.py sdist upload -r pypi``.
+
+For more information see https://packaging.python.org/.
