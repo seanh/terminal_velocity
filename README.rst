@@ -2,8 +2,8 @@
 
 Development has moved to Vincent Perricone's fork, you should use this instead: https://github.com/vhp/terminal_velocity
 
-Terminal Velocity
-=================
+Terminal Velocity (seanh's archived copy)
+=========================================
 
 
 `Terminal Velocity` is a fast note-taking app for the UNIX terminal, that
